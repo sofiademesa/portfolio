@@ -1,17 +1,16 @@
-# Hi, I'm Sofia 
-
-Welcome to my portfolio! I'm **Sofia Ryza D. De Mesa**, a Computer Science student at **Holy Angel University** and a consistent President's Lister. I'm working toward a career in **software engineering** and **data science**.
-
-## Overview
+# Sofia De Mesa
  
-The portfolio presents my academic and personal work, technical skills, certifications and leadership experience. It is organized into the following sections:
+I'm a Computer Science student at Holy Angel University and a consistent President's Lister. I enjoy building practical, user-centered software, and I'm working toward a career in software engineering and data science.
  
+This repository contains the source code for my personal website, where I share the projects I've built, the tools I work with, and the experiences that have shaped me as a developer.
+
 - **About**: background and current focus
 - **Projects**: selected work, each with a screenshot gallery
 - **Tech Stack**: languages, frameworks and tools
 - **Certifications**: credentials from Cisco Networking Academy, freeCodeCamp, Simplilearn and CompTIA, along with seminars and conferences attended
 - **Leadership**: roles held in student and academic organizations
 - **Contact**: professional contact details
+  
 ## Selected Projects
  
 | Project | Description | 
