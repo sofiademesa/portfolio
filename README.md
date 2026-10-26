@@ -41,14 +41,4 @@ Open `index.html` in any modern web browser.
 
 ## License
 
-## Event photos (Leadership + Seminars)
-
-Every item in the Leadership and Seminars lists has a photo slot (`data-photo="events/....jpg"` in `index.html`).
-Put the matching photo in the `events/` folder (full filename list in `events/README.md`) and that item lights up:
-
-- **Desktop:** hovering the item pops up a little preview window that follows the cursor; clicking opens it full size.
-- **Phone / tablet:** a camera badge marks items with photos; tapping opens the full-size viewer (Prev / Next for albums).
-
-Items without a photo stay exactly as they were. Several photos per event: separate the paths with commas.
-
 © 2026 Sofia De Mesa. All rights reserved. The design, content and images in this repository may not be reused or redistributed without permission.
