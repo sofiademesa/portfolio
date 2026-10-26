@@ -4,112 +4,187 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sofia De Mesa</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Sofia De Mesa: Computer Science student at Holy Angel University, aspiring software engineer and data scientist.">
+<meta name="theme-color" content="#0a5ae8">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,400..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Silkscreen:wght@400;700&family=VT323&family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- sky layers -->
-<div class="sky" aria-hidden="true"></div>
-<div class="stars" id="stars" aria-hidden="true"></div>
-<div class="clouds" aria-hidden="true">
-  <div class="cloud" style="--w:280px;--t:38s;left:6vw;top:22vh"></div>
-  <div class="cloud" style="--w:200px;--t:46s;left:70vw;top:12vh"></div>
-  <div class="cloud" style="--w:340px;--t:54s;left:58vw;top:66vh"></div>
-  <div class="cloud" style="--w:180px;--t:30s;left:22vw;top:78vh"></div>
-</div>
-<div class="sun" id="sun" aria-hidden="true"></div>
-<div class="moon" aria-hidden="true"></div>
+<!-- ══════ icon sprite (glossy, outlined, Y2K) ══════ -->
+<svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g-fold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff9b8"/><stop offset=".45" stop-color="#ffd84a"/><stop offset="1" stop-color="#f2a01e"/></linearGradient>
+    <linearGradient id="g-foldp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe6f5"/><stop offset=".45" stop-color="#ff9fd8"/><stop offset="1" stop-color="#e45cb3"/></linearGradient>
+    <linearGradient id="g-lime" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#efffc0"/><stop offset=".5" stop-color="#b8ef3c"/><stop offset="1" stop-color="#6fbf1c"/></linearGradient>
+    <linearGradient id="g-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#9fdcff"/><stop offset="1" stop-color="#3aa4f5"/></linearGradient>
+    <linearGradient id="g-pink" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2fa"/><stop offset=".5" stop-color="#ffb3e1"/><stop offset="1" stop-color="#ea6ec1"/></linearGradient>
+    <linearGradient id="g-yel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffde0"/><stop offset=".5" stop-color="#fff176"/><stop offset="1" stop-color="#f4c51c"/></linearGradient>
+    <linearGradient id="g-screen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7fd0ff"/><stop offset="1" stop-color="#1b6cf0"/></linearGradient>
+    <linearGradient id="g-red" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffb4a8"/><stop offset="1" stop-color="#e2321f"/></linearGradient>
+  </defs>
+  <symbol id="i-folder" viewBox="0 0 32 32"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6H12l3 3h11.5A2.5 2.5 0 0 1 29 11.5v13a2.5 2.5 0 0 1-2.5 2.5h-21A2.5 2.5 0 0 1 3 24.5z" fill="url(#g-fold)" stroke="#0b1b4d" stroke-width="1.6" stroke-linejoin="round"/><path d="M6 12.5h20" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".8"/></symbol>
+  <symbol id="i-folder-p" viewBox="0 0 32 32"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6H12l3 3h11.5A2.5 2.5 0 0 1 29 11.5v13a2.5 2.5 0 0 1-2.5 2.5h-21A2.5 2.5 0 0 1 3 24.5z" fill="url(#g-foldp)" stroke="#0b1b4d" stroke-width="1.6" stroke-linejoin="round"/><path d="M6 12.5h20" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".8"/></symbol>
+  <symbol id="i-user" viewBox="0 0 32 32"><path d="M5 28c0-6.2 4.9-10.5 11-10.5S27 21.8 27 28z" fill="url(#g-sky)" stroke="#0b1b4d" stroke-width="1.6" stroke-linejoin="round"/><circle cx="16" cy="11" r="6.2" fill="url(#g-lime)" stroke="#0b1b4d" stroke-width="1.6"/><ellipse cx="14" cy="8.6" rx="2.4" ry="1.4" fill="#fff" opacity=".8"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 32 32"><path d="M11.5 22.5h9l2 5h-13z" fill="#cfd9ea" stroke="#0b1b4d" stroke-width="1.6" stroke-linejoin="round"/><rect x="3.5" y="4.5" width="25" height="18" rx="2.5" fill="#e9eff9" stroke="#0b1b4d" stroke-width="1.6"/><rect x="6.5" y="7.5" width="19" height="12" rx="1" fill="url(#g-screen)" stroke="#0b1b4d" stroke-width="1.2"/><path d="M8.5 10l5-1.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".8"/></symbol>
+  <symbol id="i-chip" viewBox="0 0 32 32"><g stroke="#0b1b4d" stroke-width="1.6" stroke-linecap="round"><path d="M11 3.5v4M16 3.5v4M21 3.5v4M11 24.5v4M16 24.5v4M21 24.5v4M3.5 11h4M3.5 16h4M3.5 21h4M24.5 11h4M24.5 16h4M24.5 21h4"/></g><rect x="7.5" y="7.5" width="17" height="17" rx="2.5" fill="url(#g-lime)" stroke="#0b1b4d" stroke-width="1.6"/><rect x="12" y="12" width="8" height="8" rx="1" fill="#0b1b4d"/><path d="M10 10.5h6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".85"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 32 32"><path d="M9.5 7.5H5.5c0 5 2.2 7.5 6 7.5M22.5 7.5h4c0 5-2.2 7.5-6 7.5" fill="none" stroke="#0b1b4d" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.5 4.5h13v7a6.5 6.5 0 0 1-13 0z" fill="url(#g-yel)" stroke="#0b1b4d" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 18h4v4h-4z" fill="#f4c51c" stroke="#0b1b4d" stroke-width="1.6"/><rect x="9.5" y="22" width="13" height="5.5" rx="1.2" fill="url(#g-pink)" stroke="#0b1b4d" stroke-width="1.6"/><path d="M12 7.5v3.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-cert" viewBox="0 0 32 32"><path d="M6.5 3.5h13l6 6v19h-19z" fill="#fff" stroke="#0b1b4d" stroke-width="1.6" stroke-linejoin="round"/><path d="M19.5 3.5v6h6" fill="#dbe9ff" stroke="#0b1b4d" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 13h11M10 16.5h8" stroke="#7a8fbf" stroke-width="1.6" stroke-linecap="round"/><path d="M13 23l-2 6 3-1.5 2 2 1-5.5" fill="url(#g-red)" stroke="#0b1b4d" stroke-width="1.3" stroke-linejoin="round"/><circle cx="15" cy="22" r="3.6" fill="url(#g-yel)" stroke="#0b1b4d" stroke-width="1.4"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 32 32"><rect x="3.5" y="7.5" width="25" height="18" rx="2.5" fill="url(#g-sky)" stroke="#0b1b4d" stroke-width="1.6"/><path d="M4.5 9l11.5 9 11.5-9" fill="none" stroke="#0b1b4d" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 11l3 2.3" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 1.5 14.6 9.4 22.5 12 14.6 14.6 12 22.5 9.4 14.6 1.5 12 9.4 9.4Z" fill="url(#g-lime)" stroke="#0b1b4d" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 100 92"><path d="M50 86C22 66 6 50 6 30 6 16 17 6 30 6c9 0 16 5 20 12C54 11 61 6 70 6c13 0 24 10 24 24 0 20-16 36-44 56z" fill="url(#g-sky)" stroke="#0b1b4d" stroke-width="4" stroke-linejoin="round"/><path d="M22 22c3-5 8-7 13-6" stroke="#fff" stroke-width="6" stroke-linecap="round" fill="none" opacity=".9"/></symbol>
+  <symbol id="i-heart-p" viewBox="0 0 100 92"><path d="M50 86C22 66 6 50 6 30 6 16 17 6 30 6c9 0 16 5 20 12C54 11 61 6 70 6c13 0 24 10 24 24 0 20-16 36-44 56z" fill="url(#g-pink)" stroke="#0b1b4d" stroke-width="4" stroke-linejoin="round"/><path d="M22 22c3-5 8-7 13-6" stroke="#fff" stroke-width="6" stroke-linecap="round" fill="none" opacity=".9"/></symbol>
+  <symbol id="i-flower" viewBox="0 0 100 100"><g stroke="#0b1b4d" stroke-width="8"><circle cx="50" cy="24" r="21"/><circle cx="74.7" cy="42" r="21"/><circle cx="65.3" cy="71" r="21"/><circle cx="34.7" cy="71" r="21"/><circle cx="25.3" cy="42" r="21"/></g><g fill="url(#g-lime)"><circle cx="50" cy="24" r="21"/><circle cx="74.7" cy="42" r="21"/><circle cx="65.3" cy="71" r="21"/><circle cx="34.7" cy="71" r="21"/><circle cx="25.3" cy="42" r="21"/><circle cx="50" cy="50" r="24"/></g><circle cx="50" cy="50" r="11" fill="#fff" stroke="#0b1b4d" stroke-width="4"/><path d="M40 14c4-3 9-4 13-3" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".9"/></symbol>
+  <symbol id="i-bubble" viewBox="0 0 100 90"><path d="M50 6C24 6 6 21 6 40c0 11 6 20 16 26l-5 18 20-12c4 1 9 2 13 2 26 0 44-15 44-34S76 6 50 6z" fill="url(#g-yel)" stroke="#0b1b4d" stroke-width="4" stroke-linejoin="round"/><path d="M22 26c4-6 11-9 18-10" stroke="#fff" stroke-width="6" stroke-linecap="round" fill="none" opacity=".9"/></symbol>
+  <symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="2.2"/></symbol>
+</svg>
 
-<div class="cursor" id="cursor" aria-hidden="true">
-  <svg viewBox="0 0 24 24"><path d="M12 1 L14.6 9.4 L23 12 L14.6 14.6 L12 23 L9.4 14.6 L1 12 L9.4 9.4 Z" fill="#c8f04a" stroke="#0b1b4d" stroke-width="1.6" stroke-linejoin="round"/></svg>
-  <span class="lbl" id="cursor-lbl"></span>
+<!-- ══════ the desktop wallpaper ══════ -->
+<div class="desk" aria-hidden="true">
+  <div class="desk-sky"></div>
+  <div class="desk-glow"></div>
+  <div class="desk-cloud" style="--w:360px;left:4%;top:12%;--t:70s"></div>
+  <div class="desk-cloud" style="--w:240px;left:62%;top:6%;--t:90s"></div>
+  <div class="desk-cloud" style="--w:300px;left:78%;top:34%;--t:80s"></div>
+  <div class="desk-cloud" style="--w:200px;left:28%;top:40%;--t:60s"></div>
+  <svg class="desk-hill" viewBox="0 0 1600 420" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="hill-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fe13a"/><stop offset=".55" stop-color="#4fae1c"/><stop offset="1" stop-color="#2f7d10"/></linearGradient>
+      <linearGradient id="hill-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b6f04d"/><stop offset="1" stop-color="#5fb81f"/></linearGradient>
+    </defs>
+    <path d="M0 260C220 170 470 130 760 170 1050 210 1330 120 1600 150V420H0Z" fill="url(#hill-b)"/>
+    <path d="M0 330C300 230 640 200 960 250 1240 294 1440 250 1600 236V420H0Z" fill="url(#hill-a)"/>
+  </svg>
+  <div class="desk-grid"></div>
+  <div class="desk-stars" id="deskstars"></div>
 </div>
 
-<div class="top">
-  <div class="wrap">
-    <div class="top-r">
-      <span class="pill lime"><span class="spark" style="background:var(--navy);width:10px;height:10px"></span>Open to internships</span>
+<!-- ══════ HERO / DESKTOP ══════ -->
+<header class="hero" id="top">
+  <nav class="icons" aria-label="Desktop shortcuts">
+    <a class="dicon" href="#hello"><svg><use href="#i-user"/></svg><span>about_me</span></a>
+    <a class="dicon" href="#projects"><svg><use href="#i-folder"/></svg><span>projects</span></a>
+    <a class="dicon" href="#toolkit"><svg><use href="#i-chip"/></svg><span>tech_stack</span></a>
+    <a class="dicon" href="#experience"><svg><use href="#i-trophy"/></svg><span>leadership</span></a>
+    <a class="dicon" href="#credentials"><svg><use href="#i-cert"/></svg><span>certs</span></a>
+    <a class="dicon" href="#together"><svg><use href="#i-mail"/></svg><span>contact</span></a>
+  </nav>
+
+  <div class="hero-main">
+    <p class="prompt" aria-hidden="true"><span class="pr">C:\Users\Sofia&gt;</span> <span id="typed">run portfolio.exe</span><span class="caret"></span></p>
+    <h1 class="name" aria-label="Sofia De Mesa"><span class="n1">Sofia</span><span class="n2">De Mesa</span></h1>
+
+    <div class="win mini role-win">
+      <div class="tb"><svg class="tb-ico"><use href="#i-monitor"/></svg><span class="tb-t">about_me.txt</span><span class="tb-btns" aria-hidden="true"><i class="mn"></i><i class="mx"></i><i class="cl"></i></span></div>
+      <p class="role">Exploring software engineering and data science, with an eye for design and a passion for creating things that make a difference.</p>
+    </div>
+
+    <div class="hero-cta">
+      <a class="gbtn go" href="#projects">▶ View projects</a>
+      <a class="gbtn" href="https://github.com/sofiademesa" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="gbtn" href="#together">Contact</a>
     </div>
   </div>
-</div>
 
-<a class="hud off" id="hud" href="#top" aria-label="Back to the start">
-  <span class="ico"></span><span id="hud-text">08:00 · Hello</span><span class="bar"><i></i></span>
-</a>
-
-<!-- ══════ LANDING ══════ -->
-<header class="landing" id="top">
-  <div class="blocks" id="blocks" aria-hidden="true"></div>
-  <div class="wrap land-in">
-    <div>
-      <h1 class="name" id="name" aria-label="Sofia De Mesa"><span class="row one">Sofia</span><span class="row two">De Mesa</span></h1>
-      <p class="role">Exploring software engineering and data science, with an eye for design and a passion for creating things that make a difference.</p>
-      <div class="hero-cta">
-        <a class="start" href="#projects"><span class="sun-ico"></span>View projects ↓</a>
-        <a class="btn" href="https://github.com/sofiademesa" target="_blank" rel="noopener">GitHub ↗</a>
-        <a class="btn" href="#together">Contact</a>
+  <!-- kiosk: the device from the moodboard, with me on its screen -->
+  <figure class="kiosk" aria-label="Portrait of Sofia De Mesa">
+    <div class="k-top"></div>
+    <div class="k-body">
+      <div class="k-screen">
+        <div class="k-status"><span>SOFIA.EXE</span><span class="k-on">● online</span></div>
+        <img src="assets/portrait.jpg" alt="Portrait of Sofia De Mesa" width="900" height="1349">
+        <div class="k-chat">
+          <span class="k-who">currently</span>
+          VP @ League of Outstanding Programmers · Internal Relations @ GDG on Campus HAU
+        </div>
+        <div class="k-load"><span>loading dreams</span><i><b></b></i></div>
+      </div>
+      <div class="k-keys" aria-hidden="true">
+        <div class="k-btns"><i class="b-g"></i><i class="b-r"></i></div>
+        <div class="k-board" id="kboard"></div>
+        <div class="k-btns"><i class="b-b"></i><i class="b-y"></i></div>
+      </div>
+      <div class="k-base" aria-hidden="true">
+        <div class="k-plate"><b>NOTICE</b><span>1. CS @ Holy Angel Univ.</span><span>2. President's Lister</span><span>3. Open to internships</span></div>
+        <div class="k-leds"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+        <div class="k-slot"><span>CARD</span><i></i></div>
       </div>
     </div>
-    <nav class="contents sticker lift" aria-label="Contents">
-      <h2><span class="spark"></span>Contents <small>today's schedule</small></h2>
-      <ol>
-        <li><a href="#hello"><span class="num">01</span><span class="t">About</span><span class="tm">08:00</span></a></li>
-        <li><a href="#projects"><span class="num">02</span><span class="t">Projects</span><span class="tm">10:00</span></a></li>
-        <li><a href="#toolkit"><span class="num">03</span><span class="t">Tech stack</span><span class="tm">13:00</span></a></li>
-        <li><a href="#experience"><span class="num">04</span><span class="t">Leadership</span><span class="tm">15:00</span></a></li>
-        <li><a href="#credentials"><span class="num">05</span><span class="t">Certifications</span><span class="tm">17:00</span></a></li>
-        <li><a href="#together"><span class="num">06</span><span class="t">Contact</span><span class="tm">19:30</span></a></li>
-      </ol>
-      <div class="now"><span class="now-k">Currently</span>VP, League of Outstanding Programmers · Internal Relations, GDG on Campus HAU</div>
-    </nav>
-  </div>
+  </figure>
+
+  <svg class="stk stk-flower" aria-hidden="true"><use href="#i-flower"/></svg>
+  <svg class="stk stk-heart" aria-hidden="true"><use href="#i-heart"/></svg>
+  <svg class="stk stk-bubble" aria-hidden="true"><use href="#i-bubble"/></svg>
+  <svg class="stk stk-spark" aria-hidden="true"><use href="#i-spark"/></svg>
+  <svg class="stk stk-spark2" aria-hidden="true"><use href="#i-spark"/></svg>
 </header>
+
+<div class="ticker-clip"><div class="ticker t-lime" aria-hidden="true"><div class="ticker-in"><span>open to internships</span><i>✦</i><span>software engineering</span><i>✦</i><span>data science</span><i>✦</i><span>president's lister</span><i>✦</i><span>VP @ LOOP</span><i>✦</i><span>GDG on Campus HAU</span><i>✦</i><span>RAITE 2026 hackathon</span><i>✦</i><span>open to internships</span><i>✦</i><span>software engineering</span><i>✦</i><span>data science</span><i>✦</i><span>president's lister</span><i>✦</i><span>VP @ LOOP</span><i>✦</i><span>GDG on Campus HAU</span><i>✦</i><span>RAITE 2026 hackathon</span><i>✦</i></div></div></div>
 
 <main>
 <!-- ══════ 01 ABOUT ══════ -->
-<section class="chapter" id="hello" data-time="08:00" data-name="About">
+<section class="sec" id="hello" data-name="About" data-ico="i-user">
   <div class="wrap">
-    <div class="ch-head" data-pop>
-      <span class="ch-tag"><span class="pill">Ch. 01</span><span class="pill pale">☀ 08:00</span></span>
-      <h2 class="ch-title outlined">hello!</h2>
+    <div class="sec-head" data-pop>
+      <span class="sec-no">01</span>
+      <h2 class="sec-title">about_me</h2>
     </div>
-    <div class="hello">
-      <figure class="polaroid sticker lift" data-pop style="margin:0">
-        <div class="ph"><img src="assets/portrait.jpg" alt="Portrait of Sofia De Mesa" width="900" height="1349"></div>
-      </figure>
-      <div class="hello-card sticker" data-pop style="--pr:3deg">
-        <p>I'm <b>Sofia Ryza D. De Mesa</b> (she/her), a Computer Science student at <b>Holy Angel University</b> and a consistent President's Lister, focused on software engineering and data science.</p>
-        <p>Beyond academics, I enjoy being part of tech communities where I can collaborate, learn, and grow alongside fellow tech enthusiasts. I currently serve as <b>Vice President</b> of the League of Outstanding Programmers (LOOP) and <b>Internal Relations Officer</b> at Google Developer Groups on Campus – HAU.</p>
-        <ul class="edu">
-          <li><div><h3>B.S. Computer Science</h3><p>Holy Angel University · Consistent President's Lister</p></div><span class="yr">2024–2028</span></li>
-          <li><div><h3>STEM Strand, Senior High School</h3><p>Holy Angel University · With High Honors</p></div><span class="yr">2022–2024</span></li>
-        </ul>
+
+    <div class="win msn" data-pop>
+      <div class="tb"><svg class="tb-ico"><use href="#i-user"/></svg><span class="tb-t">Sofia — Conversation</span><span class="tb-btns" aria-hidden="true"><i class="mn"></i><i class="mx"></i><i class="cl"></i></span></div>
+      <div class="menu" aria-hidden="true"><span>File</span><span>Edit</span><span>Actions</span><span>Tools</span><span>Help</span></div>
+      <div class="msn-in">
+        <aside class="msn-side">
+          <div class="avatar"><img src="assets/portrait.jpg" alt="" width="900" height="1349" loading="lazy"></div>
+          <div class="presence"><i></i>Online</div>
+          <p class="msn-psm">♪ open to SWE &amp; data internships</p>
+        </aside>
+        <div class="msn-main">
+          <div class="msn-to"><span><b>To:</b> you &lt;visitor@internet&gt;</span><span class="typing" aria-hidden="true">Sofia is typing<i></i><i></i><i></i></span></div>
+          <div class="chat">
+            <p class="said">Sofia says:</p>
+            <p class="msg">I'm <b>Sofia Ryza D. De Mesa</b> (she/her), a Computer Science student at <b>Holy Angel University</b> and a consistent President's Lister, focused on software engineering and data science.</p>
+            <p class="said">Sofia says:</p>
+            <p class="msg">Beyond academics, I enjoy being part of tech communities where I can collaborate, learn, and grow alongside fellow tech enthusiasts. I currently serve as <b>Vice President</b> of the League of Outstanding Programmers (LOOP) and <b>Internal Relations Officer</b> at Google Developer Groups on Campus – HAU.</p>
+            <p class="said">Sofia sent a file:</p>
+            <ul class="edu">
+              <li><svg><use href="#i-cert"/></svg><div><h3>B.S. Computer Science</h3><p>Holy Angel University · Consistent President's Lister</p></div><span class="yr">2024–2028</span></li>
+              <li><svg><use href="#i-cert"/></svg><div><h3>STEM Strand, Senior High School</h3><p>Holy Angel University · With High Honors</p></div><span class="yr">2022–2024</span></li>
+            </ul>
+          </div>
+          <div class="compose">
+            <span class="compose-in">say hi to Sofia…</span>
+            <a class="gbtn go sm" href="#together">Send</a>
+          </div>
+        </div>
       </div>
+      <div class="sb"><span>Sofia is online</span><span>Mabalacat City, PH · <span data-clock>--:--</span></span></div>
     </div>
   </div>
 </section>
 
 <!-- ══════ 02 PROJECTS ══════ -->
-<section class="chapter" id="projects" data-time="10:00" data-name="Projects">
+<section class="sec" id="projects" data-name="Projects" data-ico="i-folder">
   <div class="wrap">
-    <div class="ch-head" data-pop>
-      <span class="ch-tag"><span class="pill">Ch. 02</span><span class="pill pale">☀ 10:00</span></span>
-      <h2 class="ch-title outlined">projects</h2>
-      <p class="ch-lede">Selected work, from mobile and full-stack apps to an AI tool built under hackathon pressure.</p>
+    <div class="sec-head" data-pop>
+      <span class="sec-no">02</span>
+      <h2 class="sec-title">projects</h2>
+      <p class="sec-lede">Selected work, from mobile and full-stack apps to an AI tool built under hackathon pressure.</p>
     </div>
     <div class="work">
 
-      <article class="win proj sticker" data-pop>
-        <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fn">love-my-closet</span><span class="ctl">Personal / Academic</span></div>
+      <article class="win proj" data-pop>
+        <div class="tb"><svg class="tb-ico"><use href="#i-folder-p"/></svg><span class="tb-t">love-my-closet.exe</span><span class="tb-sub">Personal / Academic</span><span class="tb-btns" aria-hidden="true"><i class="mn"></i><i class="mx"></i><i class="cl"></i></span></div>
+        <div class="addr" aria-hidden="true"><span class="addr-k">Address</span><span class="addr-v">C:\Sofia\Projects\love-my-closet</span></div>
         <div class="proj-in">
-          <button class="art shot" type="button" data-shots="[[&quot;projects/love-my-closet-home.jpg&quot;, &quot;Home&quot;], [&quot;projects/love-my-closet-builder.jpg&quot;, &quot;Outfit Builder&quot;]]" data-name="Love My Closet" aria-label="View Love My Closet screenshots" data-cursor="view ↗"><img class="shot-bg" src="projects/love-my-closet-cover.jpg" alt="" aria-hidden="true" loading="lazy"><img class="shot-main" src="projects/love-my-closet-cover.jpg" alt="Love My Closet screenshots" loading="lazy" width="1600" height="1000"><span class="shot-tag">▶ 2 screenshots</span></button>
-          <div class="win-body">
+          <button class="shot" type="button" data-shots="[[&quot;projects/love-my-closet-home.jpg&quot;, &quot;Home&quot;], [&quot;projects/love-my-closet-builder.jpg&quot;, &quot;Outfit Builder&quot;]]" data-name="Love My Closet" aria-label="View Love My Closet screenshots" data-tip="view screenshots">
+            <span class="shot-screen"><img src="projects/love-my-closet-cover.jpg" alt="Love My Closet screenshots" loading="lazy" width="1600" height="1000"></span>
+            <span class="shot-bar"><span class="play">▶</span><span class="seek"><i></i></span><span class="shot-n">2 screenshots</span></span>
+          </button>
+          <div class="proj-body">
             <span class="kind">Digital wardrobe &amp; outfit planner</span>
             <h3>Love My Closet</h3>
             <p>A wardrobe app that helps people organize their clothes, rediscover forgotten pieces and plan outfits from what they already own. Built around the idea “You own it. You just forgot you do.”</p>
@@ -122,16 +197,20 @@
               <li>Auth, profiles, search, filters and accessibility settings</li>
             </ul>
             <div class="stack"><span>Flutter</span><span>Dart</span><span>Supabase</span><span>PostgreSQL</span><span>ONNX Runtime Web</span><span>U²-Net</span></div>
-            <div class="links"><a class="btn primary" href="https://sofiademesa.github.io/love-my-closet/" target="_blank" rel="noopener" data-cursor="demo ↗">Live demo ↗</a><a class="btn" href="https://github.com/sofiademesa/love-my-closet" target="_blank" rel="noopener" data-cursor="code ↗">GitHub ↗</a></div>
+            <div class="links"><a class="gbtn go" href="https://sofiademesa.github.io/love-my-closet/" target="_blank" rel="noopener">Live demo ↗</a><a class="gbtn" href="https://github.com/sofiademesa/love-my-closet" target="_blank" rel="noopener">GitHub ↗</a></div>
           </div>
         </div>
       </article>
 
-      <article class="win proj sticker flip" data-pop>
-        <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fn">tsekmate</span><span class="ctl">RAITE 2026 Hackathon</span></div>
+      <article class="win proj flip" data-pop>
+        <div class="tb"><svg class="tb-ico"><use href="#i-folder"/></svg><span class="tb-t">tsekmate.exe</span><span class="tb-sub">RAITE 2026 Hackathon</span><span class="tb-btns" aria-hidden="true"><i class="mn"></i><i class="mx"></i><i class="cl"></i></span></div>
+        <div class="addr" aria-hidden="true"><span class="addr-k">Address</span><span class="addr-v">C:\Sofia\Projects\tsekmate</span></div>
         <div class="proj-in">
-          <button class="art shot" type="button" data-shots="[[&quot;projects/tsekmate-review.jpg&quot;, &quot;Step-by-step grading review&quot;], [&quot;projects/tsekmate-dashboard.jpg&quot;, &quot;Teacher dashboard&quot;], [&quot;projects/tsekmate-landing.jpg&quot;, &quot;Sign in&quot;]]" data-name="TsekMate" aria-label="View TsekMate screenshots" data-cursor="view ↗"><img class="shot-bg" src="projects/tsekmate-cover.jpg" alt="" aria-hidden="true" loading="lazy"><img class="shot-main" src="projects/tsekmate-cover.jpg" alt="TsekMate screenshots" loading="lazy" width="1600" height="1000"><span class="shot-tag">▶ 3 screenshots</span></button>
-          <div class="win-body">
+          <button class="shot" type="button" data-shots="[[&quot;projects/tsekmate-review.jpg&quot;, &quot;Step-by-step grading review&quot;], [&quot;projects/tsekmate-dashboard.jpg&quot;, &quot;Teacher dashboard&quot;], [&quot;projects/tsekmate-landing.jpg&quot;, &quot;Sign in&quot;]]" data-name="TsekMate" aria-label="View TsekMate screenshots" data-tip="view screenshots">
+            <span class="shot-screen"><img src="projects/tsekmate-cover.jpg" alt="TsekMate screenshots" loading="lazy" width="1600" height="1000"></span>
+            <span class="shot-bar"><span class="play">▶</span><span class="seek"><i></i></span><span class="shot-n">3 screenshots</span></span>
+          </button>
+          <div class="proj-body">
             <span class="kind">AI-assisted EdTech · Hackathon</span>
             <h3>TsekMate</h3>
             <p>A teacher-facing grading platform built for the RAITE 2026 Hackathon (“Transforming Education Through AI”). It gives teachers an AI-generated first-pass assessment to speed up grading, while the teacher always makes the final call.</p>
@@ -143,16 +222,20 @@
               <li>Supabase for data storage</li>
             </ul>
             <div class="stack"><span>React</span><span>TypeScript</span><span>Tailwind CSS</span><span>React Router</span><span>FastAPI</span><span>Python</span><span>Supabase</span><span>Claude API</span></div>
-            <div class="links"><a class="btn" href="https://github.com/alyencs/TsekMate" target="_blank" rel="noopener" data-cursor="code ↗">GitHub ↗</a></div>
+            <div class="links"><a class="gbtn" href="https://github.com/alyencs/TsekMate" target="_blank" rel="noopener">GitHub ↗</a></div>
           </div>
         </div>
       </article>
 
-      <article class="win proj sticker" data-pop>
-        <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fn">stacked-knowledge</span><span class="ctl">Library management system</span></div>
+      <article class="win proj" data-pop>
+        <div class="tb"><svg class="tb-ico"><use href="#i-folder"/></svg><span class="tb-t">stacked-knowledge.exe</span><span class="tb-sub">Library management system</span><span class="tb-btns" aria-hidden="true"><i class="mn"></i><i class="mx"></i><i class="cl"></i></span></div>
+        <div class="addr" aria-hidden="true"><span class="addr-k">Address</span><span class="addr-v">C:\Sofia\Projects\stacked-knowledge</span></div>
         <div class="proj-in">
-          <button class="art shot" type="button" data-shots="[[&quot;projects/stacked-knowledge-admin.jpg&quot;, &quot;Admin dashboard&quot;], [&quot;projects/stacked-knowledge-books.jpg&quot;, &quot;Manage books&quot;], [&quot;projects/stacked-knowledge-user.jpg&quot;, &quot;User dashboard&quot;], [&quot;projects/stacked-knowledge-browse.jpg&quot;, &quot;Browse and borrow&quot;], [&quot;projects/stacked-knowledge-login.jpg&quot;, &quot;Sign in&quot;]]" data-name="Stacked Knowledge" aria-label="View Stacked Knowledge screenshots" data-cursor="view ↗"><img class="shot-bg" src="projects/stacked-knowledge-cover.jpg" alt="" aria-hidden="true" loading="lazy"><img class="shot-main" src="projects/stacked-knowledge-cover.jpg" alt="Stacked Knowledge screenshots" loading="lazy" width="1600" height="1000"><span class="shot-tag">▶ 5 screenshots</span></button>
-          <div class="win-body">
+          <button class="shot" type="button" data-shots="[[&quot;projects/stacked-knowledge-admin.jpg&quot;, &quot;Admin dashboard&quot;], [&quot;projects/stacked-knowledge-books.jpg&quot;, &quot;Manage books&quot;], [&quot;projects/stacked-knowledge-user.jpg&quot;, &quot;User dashboard&quot;], [&quot;projects/stacked-knowledge-browse.jpg&quot;, &quot;Browse and borrow&quot;], [&quot;projects/stacked-knowledge-login.jpg&quot;, &quot;Sign in&quot;]]" data-name="Stacked Knowledge" aria-label="View Stacked Knowledge screenshots" data-tip="view screenshots">
+            <span class="shot-screen"><img src="projects/stacked-knowledge-cover.jpg" alt="Stacked Knowledge screenshots" loading="lazy" width="1600" height="1000"></span>
+            <span class="shot-bar"><span class="play">▶</span><span class="seek"><i></i></span><span class="shot-n">5 screenshots</span></span>
+          </button>
+          <div class="proj-body">
             <span class="kind">Desktop app · Database</span>
             <h3>Stacked Knowledge</h3>
             <p>A library management system with both a console interface and a Tkinter GUI. Python handles the application logic, and MySQL stores and queries the library's books and users.</p>
@@ -164,16 +247,20 @@
               <li>Structured with object-oriented design</li>
             </ul>
             <div class="stack"><span>Python</span><span>MySQL</span><span>Tkinter</span><span>mysql-connector-python</span><span>OOP</span></div>
-            <div class="links"><a class="btn" href="https://github.com/sofiademesa/stacked-knowledge" target="_blank" rel="noopener" data-cursor="code ↗">GitHub ↗</a></div>
+            <div class="links"><a class="gbtn" href="https://github.com/sofiademesa/stacked-knowledge" target="_blank" rel="noopener">GitHub ↗</a></div>
           </div>
         </div>
       </article>
 
-      <article class="win proj sticker flip" data-pop>
-        <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fn">the-human-palette</span><span class="ctl">Digital art gallery</span></div>
+      <article class="win proj flip" data-pop>
+        <div class="tb"><svg class="tb-ico"><use href="#i-folder-p"/></svg><span class="tb-t">the-human-palette.exe</span><span class="tb-sub">Digital art gallery</span><span class="tb-btns" aria-hidden="true"><i class="mn"></i><i class="mx"></i><i class="cl"></i></span></div>
+        <div class="addr" aria-hidden="true"><span class="addr-k">Address</span><span class="addr-v">C:\Sofia\Projects\the-human-palette</span></div>
         <div class="proj-in">
-          <button class="art shot" type="button" data-shots="[[&quot;projects/the-human-palette-home.jpg&quot;, &quot;Home page&quot;]]" data-name="The Human Palette" aria-label="View The Human Palette screenshots" data-cursor="view ↗"><img class="shot-bg" src="projects/the-human-palette-cover.jpg" alt="" aria-hidden="true" loading="lazy"><img class="shot-main" src="projects/the-human-palette-cover.jpg" alt="The Human Palette screenshots" loading="lazy" width="1600" height="1000"><span class="shot-tag">▶ 1 screenshot</span></button>
-          <div class="win-body">
+          <button class="shot" type="button" data-shots="[[&quot;projects/the-human-palette-home.jpg&quot;, &quot;Home page&quot;]]" data-name="The Human Palette" aria-label="View The Human Palette screenshots" data-tip="view screenshot">
+            <span class="shot-screen"><img src="projects/the-human-palette-cover.jpg" alt="The Human Palette screenshots" loading="lazy" width="1600" height="1000"></span>
+            <span class="shot-bar"><span class="play">▶</span><span class="seek"><i></i></span><span class="shot-n">1 screenshot</span></span>
+          </button>
+          <div class="proj-body">
             <span class="kind">Responsive website</span>
             <h3>The Human Palette</h3>
             <p>A digital art gallery that celebrates human creativity in an era shaped by AI, inviting visitors to appreciate work made from imagination, emotion and personal experience.</p>
@@ -184,7 +271,7 @@
               <li>Visually focused browsing experience</li>
             </ul>
             <div class="stack"><span>HTML</span><span>CSS</span><span>Responsive design</span></div>
-            <div class="links"><a class="btn primary" href="https://sofiademesa.github.io/art-gallery/" target="_blank" rel="noopener" data-cursor="visit ↗">Live site ↗</a><a class="btn" href="https://github.com/sofiademesa/art-gallery" target="_blank" rel="noopener" data-cursor="code ↗">GitHub ↗</a></div>
+            <div class="links"><a class="gbtn go" href="https://sofiademesa.github.io/art-gallery/" target="_blank" rel="noopener">Live site ↗</a><a class="gbtn" href="https://github.com/sofiademesa/art-gallery" target="_blank" rel="noopener">GitHub ↗</a></div>
           </div>
         </div>
       </article>
@@ -194,217 +281,263 @@
 </section>
 
 <!-- ══════ 03 TECH STACK ══════ -->
-<section class="chapter" id="toolkit" data-time="13:00" data-name="Tech stack">
+<section class="sec" id="toolkit" data-name="Tech stack" data-ico="i-chip">
   <div class="wrap">
-    <div class="ch-head" data-pop>
-      <span class="ch-tag"><span class="pill">Ch. 03</span><span class="pill pale">☀ 13:00</span></span>
-      <h2 class="ch-title outlined">tech stack</h2>
-      <p class="ch-lede">Tools I've shipped projects with. Pink ones are the ones I use most.</p>
+    <div class="sec-head" data-pop>
+      <span class="sec-no">03</span>
+      <h2 class="sec-title">tech_<wbr>stack</h2>
+      <p class="sec-lede">Tools I've shipped projects with. The lime ones are the ones I use most.</p>
     </div>
-    <div class="select" data-pop style="--pr:2deg">
-      <span class="h"></span><span class="h"></span><span class="h"></span><span class="h"></span>
-      <span class="dims">stack.selection</span>
-      <div class="groups">
-        <div class="group"><h3>Languages</h3>
-          <div class="chips"><span class="chip k">Python</span><span class="chip k">Java</span><span class="chip k">JavaScript</span><span class="chip k">TypeScript</span><span class="chip">Dart</span><span class="chip">C++</span><span class="chip">SQL</span><span class="chip">HTML</span><span class="chip">CSS</span></div></div>
-        <div class="group"><h3>Frontend &amp; Mobile</h3>
-          <div class="chips"><span class="chip k">React</span><span class="chip k">Flutter</span><span class="chip">Tailwind CSS</span><span class="chip">React Router</span><span class="chip">Tkinter</span><span class="chip">Responsive design</span></div></div>
-        <div class="group"><h3>Backend &amp; Data</h3>
-          <div class="chips"><span class="chip k">Supabase</span><span class="chip k">PostgreSQL</span><span class="chip k">MySQL</span><span class="chip">FastAPI</span><span class="chip">Node.js</span><span class="chip">REST APIs</span></div></div>
-        <div class="group"><h3>AI &amp; Data Science</h3>
-          <div class="chips"><span class="chip k">LLM integration (Claude API)</span><span class="chip">ONNX Runtime Web</span><span class="chip">U²-Net</span><span class="chip">data analysis</span><span class="chip">data visualization</span><span class="chip">statistics</span></div></div>
-        <div class="group"><h3>Tools &amp; Practices</h3>
-          <div class="chips"><span class="chip k">Git</span><span class="chip k">GitHub</span><span class="chip">VS Code</span><span class="chip">CI/CD</span><span class="chip">Docker</span><span class="chip">Figma</span><span class="chip">OOP</span></div></div>
-        <div class="group"><h3>Collaboration</h3>
-          <div class="chips"><span class="chip k">team coordination</span><span class="chip k">project management</span><span class="chip">public speaking</span><span class="chip">critical thinking</span></div></div>
+    <div class="win sys" data-pop>
+      <div class="tb"><svg class="tb-ico"><use href="#i-chip"/></svg><span class="tb-t">System Properties</span><span class="tb-btns" aria-hidden="true"><i class="mn"></i><i class="mx"></i><i class="cl"></i></span></div>
+      <div class="tabs" aria-hidden="true"><span class="on">Installed</span><span>Hardware</span><span>Advanced</span><span>Updates</span></div>
+      <div class="sys-in">
+        <div class="sys-meter" aria-hidden="true">
+          <div class="meter"><span>CPU</span><i style="--v:.78"></i><b>coffee</b></div>
+          <div class="meter"><span>RAM</span><i style="--v:.92"></i><b>curiosity</b></div>
+        </div>
+        <div class="groups">
+          <fieldset class="group"><legend>Languages</legend>
+            <div class="chips"><span class="chip k">Python</span><span class="chip k">Java</span><span class="chip k">JavaScript</span><span class="chip k">TypeScript</span><span class="chip">Dart</span><span class="chip">C++</span><span class="chip">SQL</span><span class="chip">HTML</span><span class="chip">CSS</span></div></fieldset>
+          <fieldset class="group"><legend>Frontend &amp; Mobile</legend>
+            <div class="chips"><span class="chip k">React</span><span class="chip k">Flutter</span><span class="chip">Tailwind CSS</span><span class="chip">React Router</span><span class="chip">Tkinter</span><span class="chip">Responsive design</span></div></fieldset>
+          <fieldset class="group"><legend>Backend &amp; Data</legend>
+            <div class="chips"><span class="chip k">Supabase</span><span class="chip k">PostgreSQL</span><span class="chip k">MySQL</span><span class="chip">FastAPI</span><span class="chip">Node.js</span><span class="chip">REST APIs</span></div></fieldset>
+          <fieldset class="group"><legend>AI &amp; Data Science</legend>
+            <div class="chips"><span class="chip k">LLM integration (Claude API)</span><span class="chip">ONNX Runtime Web</span><span class="chip">U²-Net</span><span class="chip">data analysis</span><span class="chip">data visualization</span><span class="chip">statistics</span></div></fieldset>
+          <fieldset class="group"><legend>Tools &amp; Practices</legend>
+            <div class="chips"><span class="chip k">Git</span><span class="chip k">GitHub</span><span class="chip">VS Code</span><span class="chip">CI/CD</span><span class="chip">Docker</span><span class="chip">Figma</span><span class="chip">OOP</span></div></fieldset>
+          <fieldset class="group"><legend>Collaboration</legend>
+            <div class="chips"><span class="chip k">team coordination</span><span class="chip k">project management</span><span class="chip">public speaking</span><span class="chip">critical thinking</span></div></fieldset>
+        </div>
       </div>
+      <div class="sb"><span id="chip-count">38 components installed</span><span><i class="dot-k"></i> used most</span></div>
     </div>
   </div>
 </section>
 
 <!-- ══════ 04 LEADERSHIP ══════ -->
-<section class="chapter" id="experience" data-time="15:00" data-name="Leadership">
+<section class="sec" id="experience" data-name="Leadership" data-ico="i-trophy">
   <div class="wrap">
-    <div class="ch-head" data-pop>
-      <span class="ch-tag"><span class="pill">Ch. 04</span><span class="pill pale">☀ 15:00</span></span>
-      <h2 class="ch-title outlined">leadership</h2>
-      <p class="ch-lede">Organizations and student-led events at Holy Angel University.</p>
+    <div class="sec-head" data-pop>
+      <span class="sec-no">04</span>
+      <h2 class="sec-title">leadership</h2>
+      <p class="sec-lede">Orgs I help run at Holy Angel University, plus the events, conferences and seminars I've led, worked on or attended.</p>
     </div>
-    <div class="logs">
-      <div class="log sticker" data-pop>
-        <h3>Affiliations <span class="pill pale">9</span></h3>
-        <ul>
-          <li><span class="spark"></span><span class="v"><b>Vice President</b>, League of Outstanding Programmers<small>2026 – 2027</small></span></li>
-          <li><span class="spark"></span><span class="v"><b>Internal Relations Officer</b>, Google Developer Groups on Campus – HAU<small>2026 – 2027</small></span></li>
-          <li><span class="spark"></span><span class="v"><b>Finance Staff</b>, AWS Learning Club<small>2025 – 2026</small></span></li>
-          <li><span class="spark"></span><span class="v"><b>Custodian</b>, Class Presidents' League, School of Computing<small>2025 – 2026</small></span></li>
-          <li><span class="spark"></span><span class="v"><b>Associate Leader</b>, CSC-SoC Office of the Governor<small>2025 – 2026</small></span></li>
-          <li><span class="spark"></span><span class="v"><b>Finance Committee Staff</b>, CSC-SoC<small>2024 – 2025</small></span></li>
-          <li><span class="spark"></span><span class="v"><b>Member</b>, League of Outstanding Programmers<small>2024 – 2025</small></span></li>
-          <li><span class="spark"></span><span class="v"><b>Member</b>, Code Geeks<small>2024 – 2027</small></span></li>
-          <li><span class="spark"></span><span class="v"><b>Member</b>, Virtuoso<small>2023 – 2024</small></span></li>
+
+    <div class="win orgs" data-pop>
+      <div class="tb"><svg class="tb-ico"><use href="#i-user"/></svg><span class="tb-t">User Accounts — Orgs</span><span class="tb-sub">9 objects</span><span class="tb-btns" aria-hidden="true"><i class="mn"></i><i class="mx"></i><i class="cl"></i></span></div>
+      <ul class="ids">
+        <li class="id c-lime" data-photo="events/loop-vice-president.jpg" data-title="Vice President — League of Outstanding Programmers" data-meta="2026 – 2027"><span class="id-av" aria-hidden="true">LP</span><span class="id-org">LOOP</span><span class="id-role">Vice President</span><span class="id-full">League of Outstanding Programmers</span><span class="id-yr">2026 – 2027</span></li>
+        <li class="id c-blue" data-photo="events/gdgoc-hau.jpg" data-title="Internal Relations Officer — Google Developer Groups on Campus – HAU" data-meta="2026 – 2027"><span class="id-av" aria-hidden="true">GD</span><span class="id-org">GDGoC</span><span class="id-role">Internal Relations Officer</span><span class="id-full">Google Developer Groups on Campus – HAU</span><span class="id-yr">2026 – 2027</span></li>
+        <li class="id c-sun" data-photo="events/aws-learning-club.jpg" data-title="Finance Staff — AWS Learning Club" data-meta="2025 – 2026"><span class="id-av" aria-hidden="true">AW</span><span class="id-org">AWS LC</span><span class="id-role">Finance Staff</span><span class="id-full">AWS Learning Club</span><span class="id-yr">2025 – 2026</span></li>
+        <li class="id c-pink" data-photo="events/class-presidents-league.jpg" data-title="Custodian — Class Presidents' League, School of Computing" data-meta="2025 – 2026"><span class="id-av" aria-hidden="true">CP</span><span class="id-org">CPL</span><span class="id-role">Custodian</span><span class="id-full">Class Presidents' League, School of Computing</span><span class="id-yr">2025 – 2026</span></li>
+        <li class="id c-navy" data-photo="events/csc-soc-office-governor.jpg" data-title="Associate Leader — CSC-SoC Office of the Governor" data-meta="2025 – 2026"><span class="id-av" aria-hidden="true">CS</span><span class="id-org">CSC-SoC</span><span class="id-role">Associate Leader</span><span class="id-full">CSC-SoC Office of the Governor</span><span class="id-yr">2025 – 2026</span></li>
+        <li class="id c-navy" data-photo="events/csc-soc.jpg" data-title="Finance Committee Staff — College Student Council – School of Computing" data-meta="2024 – 2025"><span class="id-av" aria-hidden="true">CS</span><span class="id-org">CSC-SoC</span><span class="id-role">Finance Committee Staff</span><span class="id-full">College Student Council – School of Computing</span><span class="id-yr">2024 – 2025</span></li>
+        <li class="id c-lime" data-photo="events/loop-member.jpg" data-title="Member — League of Outstanding Programmers" data-meta="2024 – 2025"><span class="id-av" aria-hidden="true">LP</span><span class="id-org">LOOP</span><span class="id-role">Member</span><span class="id-full">League of Outstanding Programmers</span><span class="id-yr">2024 – 2025</span></li>
+        <li class="id c-pink" data-photo="events/code-geeks.jpg" data-title="Member — Code Geeks" data-meta="2024 – 2027"><span class="id-av" aria-hidden="true">CG</span><span class="id-org">Code Geeks</span><span class="id-role">Member</span><span class="id-full">Code Geeks</span><span class="id-yr">2024 – 2027</span></li>
+        <li class="id c-sky" data-photo="events/virtuoso.jpg" data-title="Member — Virtuoso" data-meta="2023 – 2024"><span class="id-av" aria-hidden="true">VR</span><span class="id-org">Virtuoso</span><span class="id-role">Member</span><span class="id-full">Virtuoso</span><span class="id-yr">2023 – 2024</span></li>
+      </ul>
+    </div>
+
+    <div class="strips">
+      <div class="win strip-win" data-pop>
+        <div class="tb"><svg class="tb-ico"><use href="#i-folder"/></svg><span class="tb-t">around-campus</span><span class="tb-sub">17 items</span><span class="tb-btns" aria-hidden="true"><i class="mn"></i><i class="mx"></i><i class="cl"></i></span></div>
+        <div class="addr" aria-hidden="true"><span class="addr-k">Address</span><span class="addr-v">C:\Sofia\Leadership\Orgs, college week and class</span></div>
+        <ul class="strip" tabindex="0" aria-label="Around campus">
+          <li class="ev ev-hl" data-photo="events/webraze.jpg" data-title="Coremaster — House Webraze" data-meta="Overall champion"><span class="ev-award">🏆 Overall champion</span><span class="ev-role">Coremaster</span><b class="ev-name">House Webraze</b><span class="ev-d">Led my house of block sections through every SoC Days competition</span></li>
+          <li class="ev ev-hl" data-photo="events/spellbound.jpg" data-title="Project Head — Spellbound" data-meta="Best booth"><span class="ev-award">🏆 Best booth</span><span class="ev-role">Project Head</span><b class="ev-name">Spellbound</b><span class="ev-d">LOOP's booth at the University Student Council's fair for all HAU orgs</span></li>
+          <li class="ev" data-photo="events/cert-exe-comptia-review.jpg" data-title="Organizing Committee Member — Cert.exe" data-meta="CompTIA Tech+ certification review"><span class="ev-role">Organizing Committee Member</span><b class="ev-name">Cert.exe</b><span class="ev-d">LOOP's CompTIA Tech+ certification review</span></li>
+          <li class="ev" data-photo="events/version-one-git-workshop.jpg" data-title="Organizing Committee Member — Version One" data-meta="Beginner's workshop on Git and GitHub"><span class="ev-role">Organizing Committee Member</span><b class="ev-name">Version One</b><span class="ev-d">LOOP's beginner workshop on Git and GitHub</span></li>
+          <li class="ev" data-photo="events/byte-by-byte.jpg" data-title="Project Head — Byte by Byte" data-meta="Intro to programming with Python"><span class="ev-role">Project Head</span><b class="ev-name">Byte by Byte</b><span class="ev-d">LOOP's intro to programming with Python</span></li>
+          <li class="ev" data-photo="events/soc-general-assembly.jpg" data-title="Project Head — SoC General Assembly" data-meta="Led LOOP's part in the assembly"><span class="ev-role">Project Head</span><b class="ev-name">SoC General Assembly</b><span class="ev-d">Led LOOP's part in the assembly</span></li>
+          <li class="ev" data-photo="events/quiz-bee-tetris.jpg" data-title="Activity Coordinator — Quiz Bee and Tetris" data-meta="SoC Days 2026"><span class="ev-role">Activity Coordinator</span><b class="ev-name">Quiz Bee and Tetris</b><span class="ev-d">SoC Days 2026</span></li>
+          <li class="ev" data-photo="events/laro-ng-lahi-tetris.jpg" data-title="Activity Coordinator — Laro ng Lahi and Tetris" data-meta="SoC Days 2026"><span class="ev-role">Activity Coordinator</span><b class="ev-name">Laro ng Lahi and Tetris</b><span class="ev-d">SoC Days 2026</span></li>
+          <li class="ev" data-photo="events/soc-days-2025.jpg" data-title="Support Staff — SoC Days 2025" data-meta=""><span class="ev-role">Support Staff</span><b class="ev-name">SoC Days 2025</b><span class="ev-d">The School of Computing's college week</span></li>
+          <li class="ev" data-photo="events/soc-days.jpg" data-title="Support Staff — SoC Days" data-meta=""><span class="ev-role">Support Staff</span><b class="ev-name">SoC Days</b><span class="ev-d">The School of Computing's college week</span></li>
+          <li class="ev" data-photo="events/academic-cluster-head.jpg" data-title="Academic Cluster Head — School of Computing academic events" data-meta="In charge of all of the college's academic events"><span class="ev-role">Academic Cluster Head</span><b class="ev-name">School of Computing academic events</b><span class="ev-d">In charge of all of the college's academic events</span></li>
+          <li class="ev" data-photo="events/cs-301.jpg" data-title="Class President — CS-301" data-meta="3rd year, 1st semester"><span class="ev-role">Class President</span><b class="ev-name">CS-301</b><span class="ev-d">3rd year, 1st semester</span></li>
+          <li class="ev" data-photo="events/cs-202.jpg" data-title="Class President — CS-202" data-meta="2nd year, 2nd semester"><span class="ev-role">Class President</span><b class="ev-name">CS-202</b><span class="ev-d">2nd year, 2nd semester</span></li>
+          <li class="ev" data-photo="events/cs-201.jpg" data-title="Class President — CS-201" data-meta="2nd year, 1st semester"><span class="ev-role">Class President</span><b class="ev-name">CS-201</b><span class="ev-d">2nd year, 1st semester</span></li>
+          <li class="ev" data-photo="events/soc-review-session-second-sem.jpg" data-title="Organizer — Prelim and Midterm Review" data-meta="2nd semester"><span class="ev-role">Organizer</span><b class="ev-name">Prelim and Midterm Review</b><span class="ev-d">2nd semester</span></li>
+          <li class="ev" data-photo="events/soc-review-session-first-sem.jpg" data-title="Organizer — Prelim and Midterm Review" data-meta="1st semester"><span class="ev-role">Organizer</span><b class="ev-name">Prelim and Midterm Review</b><span class="ev-d">1st semester</span></li>
+          <li class="ev" data-photo="events/day-with-the-foxes.jpg" data-title="Event Staff — A Day With the Foxes" data-meta="Day 1 and Day 2"><span class="ev-role">Event Staff</span><b class="ev-name">A Day With the Foxes</b><span class="ev-d">Day 1 and Day 2</span></li>
         </ul>
+        <div class="strip-foot"><button class="gbtn sm strip-prev" type="button" aria-label="Previous around campus">◀ Back</button><span class="strip-count" aria-live="polite"></span><button class="gbtn sm strip-next" type="button" aria-label="Next around campus">Next ▶</button></div>
       </div>
-      <div class="log sticker" data-pop>
-        <h3>Active contributions <span class="pill pale">20</span></h3>
-        <ul>
-          <li><span class="spark"></span><span class="v"><b>Organizing Committee</b>, Cert.exe: CompTIA Tech+ Certification Review</span></li>
-          <li><span class="spark"></span><span class="v"><b>Organizing Committee</b>, Version One: A Beginner's Workshop on Git</span></li>
-          <li><span class="spark"></span><span class="v"><b>Project Head</b>, Byte by Byte: Introductory Programming Series</span></li>
-          <li><span class="spark"></span><span class="v"><b>Project Head, LOOP's participation</b>, School of Computing (SoC) General Assembly</span></li>
-          <li><span class="spark"></span><span class="v"><b>Project Head, LOOP's participation</b>, Spellbound: Freshman Orientation and Student Activities</span></li>
-          <li><span class="spark"></span><span class="v"><b>Academic Cluster Head</b>, School of Computing</span></li>
-          <li><span class="spark"></span><span class="v"><b>Class President</b>, CS-301 (Third Year, First Semester)</span></li>
-          <li><span class="spark"></span><span class="v"><b>Point Person</b>, Quiz Bee and Tetris</span></li>
+
+      <div class="win strip-win" data-pop>
+        <div class="tb"><svg class="tb-ico"><use href="#i-folder-p"/></svg><span class="tb-t">conferences-and-seminars</span><span class="tb-sub">11 items</span><span class="tb-btns" aria-hidden="true"><i class="mn"></i><i class="mx"></i><i class="cl"></i></span></div>
+        <div class="addr" aria-hidden="true"><span class="addr-k">Address</span><span class="addr-v">C:\Sofia\Leadership\Talks I attended or worked at</span></div>
+        <ul class="strip" tabindex="0" aria-label="Conferences and seminars">
+          <li class="ev ev-hl" data-photo="events/raite-2026.jpg" data-title="Participant — RAITE 2026" data-meta="Oct 2, 2026"><span class="ev-award">★ Featured</span><span class="ev-role">Participant</span><b class="ev-name">RAITE 2026</b><span class="ev-d">Regional Assembly on Information Technology Education, Oct 2, 2026</span></li>
+          <li class="ev ev-hl" data-photo="events/egovph-hackathon-2026.jpg" data-title="Participant — eGovPH Hackathon 2026" data-meta="Jul 21–22, 2026"><span class="ev-award">★ Featured</span><span class="ev-role">Participant</span><b class="ev-name">eGovPH Hackathon 2026</b><span class="ev-d">SMX Convention Center Aura, Taguig City, Jul 21–22, 2026</span></li>
+          <li class="ev" data-photo="events/regional-cybersecurity-conference-2025.jpg" data-title="Usher — Regional Cybersecurity Conference 2025" data-meta="Oct 3, 2025"><span class="ev-role">Usher</span><b class="ev-name">Regional Cybersecurity Conference 2025</b><span class="ev-d">Oct 3, 2025</span></li>
+          <li class="ev" data-photo="events/aws-introduction-cloud-computing.jpg" data-title="AWS Introduction to Cloud Computing" data-meta="Aug 17, 2025"><span class="ev-role">Attended</span><b class="ev-name">AWS Introduction to Cloud Computing</b><span class="ev-d">Aug 17, 2025</span></li>
+          <li class="ev" data-photo="events/gonna-be-golden-gdgoc.jpg" data-title="Gonna be Golden: Level Up with GDGoC!" data-meta="Aug 9, 2025, 2025–2026 info session"><span class="ev-role">Attended</span><b class="ev-name">Gonna be Golden: Level Up with GDGoC!</b><span class="ev-d">Aug 9, 2025, 2025–2026 info session</span></li>
+          <li class="ev" data-photo="events/iweb-prelim-review-session.jpg" data-title="IWEB Prelim Review Session" data-meta="Jul 19, 2025"><span class="ev-role">Attended</span><b class="ev-name">IWEB Prelim Review Session</b><span class="ev-d">Jul 19, 2025</span></li>
+          <li class="ev" data-photo="events/web-101.jpg" data-title="Web 101: A Beginner's Guide to Web Development" data-meta="Jul 11, 2025"><span class="ev-role">Attended</span><b class="ev-name">Web 101: A Beginner's Guide to Web Development</b><span class="ev-d">Jul 11, 2025</span></li>
+          <li class="ev" data-photo="events/cyber-resilience-ai-era.jpg" data-title="Support Staff — Cyber Resilience in the AI Era" data-meta="Jan 31, 2025"><span class="ev-role">Support Staff</span><b class="ev-name">Cyber Resilience in the AI Era</b><span class="ev-d">Jan 31, 2025</span></li>
+          <li class="ev" data-photo="events/unlocking-true-wealth.jpg" data-title="Unlocking True Wealth: Three Transformative Concepts I Learned from the Markets" data-meta="Sep 18, 2024"><span class="ev-role">Attended</span><b class="ev-name">Unlocking True Wealth</b><span class="ev-d">Sep 18, 2024</span></li>
+          <li class="ev" data-photo="events/beyond-the-code-web-design.jpg" data-title="Beyond the Code: An Introduction to Web Design Principles" data-meta="Aug 30, 2024"><span class="ev-role">Attended</span><b class="ev-name">Beyond the Code: An Introduction to Web Design Principles</b><span class="ev-d">Aug 30, 2024</span></li>
+          <li class="ev" data-photo="events/regional-blockchain-conference-2024.jpg" data-title="1st Regional Blockchain Conference 2024: Innovate, Educate, and Elevate with Blockchain" data-meta="Jul 19, 2024"><span class="ev-role">Attended</span><b class="ev-name">1st Regional Blockchain Conference 2024</b><span class="ev-d">Jul 19, 2024</span></li>
         </ul>
-        <details class="more">
-          <summary>Show all 20 contributions</summary>
-          <ul>
-            <li><span class="spark"></span><span class="v"><b>Organizer</b>, SoC Prelim and Midterm Review Session, Second Semester</span></li>
-            <li><span class="spark"></span><span class="v"><b>Class President</b>, CS-202 (Second Semester)</span></li>
-            <li><span class="spark"></span><span class="v"><b>Usher</b>, Regional Cybersecurity Conference 2025</span></li>
-            <li><span class="spark"></span><span class="v"><b>Support Staff</b>, School of Computing Days 2025</span></li>
-            <li><span class="spark"></span><span class="v"><b>House Master</b>, Webraze</span></li>
-            <li><span class="spark"></span><span class="v"><b>Organizer</b>, SoC Prelim and Midterm Review Session, First Semester</span></li>
-            <li><span class="spark"></span><span class="v"><b>Point Person</b>, Laro ng Lahi and Tetris</span></li>
-            <li><span class="spark"></span><span class="v"><b>Class President</b>, CS-201 (First Semester)</span></li>
-            <li><span class="spark"></span><span class="v"><b>Support Staff</b>, School of Computing (SoC) Days</span></li>
-            <li><span class="spark"></span><span class="v"><b>Support Staff</b>, Cyber Resilience in the AI Era: Empowering Business Leaders and Developing Next-Gen Cybersecurity Professionals</span></li>
-            <li><span class="spark"></span><span class="v"><b>Staff</b>, A Day With the Foxes, Day 1</span></li>
-            <li><span class="spark"></span><span class="v"><b>Staff</b>, A Day With the Foxes, Day 2</span></li>
-          </ul>
-        </details>
+        <div class="strip-foot"><button class="gbtn sm strip-prev" type="button" aria-label="Previous conferences and seminars">◀ Back</button><span class="strip-count" aria-live="polite"></span><button class="gbtn sm strip-next" type="button" aria-label="Next conferences and seminars">Next ▶</button></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ══════ 05 CERTIFICATIONS ══════ -->
-<section class="chapter" id="credentials" data-time="17:00" data-name="Certifications">
+<section class="sec" id="credentials" data-name="Certifications" data-ico="i-cert">
   <div class="wrap">
-    <div class="ch-head" data-pop>
-      <span class="ch-tag"><span class="pill">Ch. 05</span><span class="pill pale">☀ 17:00</span></span>
-      <h2 class="ch-title outlined">certifications</h2>
-      <p class="ch-lede">Industry certifications, plus the conferences and seminars I've attended.</p>
+    <div class="sec-head" data-pop>
+      <span class="sec-no">05</span>
+      <h2 class="sec-title">certifications</h2>
+      <p class="sec-lede">Industry certifications I've earned. Open one to see the certificate.</p>
     </div>
-    <div class="certs">
-      <article class="cert sticker lift" data-pop tabindex="0" role="button" data-cert="certs/ccna-introduction-to-networks.png" data-title="CCNA: Introduction to Networks" aria-label="View CCNA: Introduction to Networks certificate" data-cursor="view ↗">
-        <div class="cert-logo"><img src="certs/cisco.png" alt="Cisco"></div>
-        <div><h3>CCNA: Introduction to Networks</h3><div class="by">Cisco Networking Academy</div></div>
-        <div class="cert-foot"><span class="yr">Sep 16, 2026</span><span class="pill lime">✓ verified</span></div>
-        <span class="cert-view">View certificate ↗</span>
-      </article>
-      <article class="cert sticker lift" data-pop tabindex="0" role="button" data-cert="certs/intro-to-data-science.png" data-title="Introduction to Data Science" aria-label="View Introduction to Data Science certificate" data-cursor="view ↗">
-        <div class="cert-logo"><img src="certs/cisco.png" alt="Cisco"></div>
-        <div><h3>Introduction to Data Science</h3><div class="by">Cisco Networking Academy</div></div>
-        <div class="cert-foot"><span class="yr">Apr 14, 2026</span><span class="pill lime">✓ verified</span></div>
-        <span class="cert-view">View certificate ↗</span>
-      </article>
-      <article class="cert sticker lift" data-pop tabindex="0" role="button" data-cert="certs/javascript-essentials-1.png" data-title="JavaScript Essentials 1" aria-label="View JavaScript Essentials 1 certificate" data-cursor="view ↗">
-        <div class="cert-logo"><img src="certs/cisco.png" alt="Cisco"></div>
-        <div><h3>JavaScript Essentials 1</h3><div class="by">Cisco Networking Academy</div></div>
-        <div class="cert-foot"><span class="yr">Oct 14, 2025</span><span class="pill lime">✓ verified</span></div>
-        <span class="cert-view">View certificate ↗</span>
-      </article>
-      <article class="cert sticker lift" data-pop tabindex="0" role="button" data-cert="certs/responsive-web-design.png" data-title="Responsive Web Design" aria-label="View Responsive Web Design certificate" data-cursor="view ↗">
-        <div class="cert-logo"><img src="certs/fcc.png" alt="freeCodeCamp"></div>
-        <div><h3>Responsive Web Design</h3><div class="by">freeCodeCamp</div></div>
-        <div class="cert-foot"><span class="yr">Oct 1, 2025</span><span class="pill lime">✓ verified</span></div>
-        <span class="cert-view">View certificate ↗</span>
-      </article>
-      <article class="cert sticker lift" data-pop tabindex="0" role="button" data-cert="certs/git-training.png" data-title="Git Training" aria-label="View Git Training certificate" data-cursor="view ↗">
-        <div class="cert-logo"><img src="certs/simplilearn.png" alt="Simplilearn"></div>
-        <div><h3>Git Training</h3><div class="by">Simplilearn</div></div>
-        <div class="cert-foot"><span class="yr">Sep 26, 2025</span><span class="pill lime">✓ verified</span></div>
-        <span class="cert-view">View certificate ↗</span>
-      </article>
-      <article class="cert sticker lift" data-pop tabindex="0" role="button" data-cert="certs/intro-to-figma.png" data-title="Introduction to Figma" aria-label="View Introduction to Figma certificate" data-cursor="view ↗">
-        <div class="cert-logo"><img src="certs/simplilearn.png" alt="Simplilearn"></div>
-        <div><h3>Introduction to Figma</h3><div class="by">Simplilearn</div></div>
-        <div class="cert-foot"><span class="yr">Sep 1, 2025</span><span class="pill lime">✓ verified</span></div>
-        <span class="cert-view">View certificate ↗</span>
-      </article>
-      <article class="cert sticker lift" data-pop tabindex="0" role="button" data-cert="certs/it-fundamentals.png" data-title="CompTIA IT Fundamentals+ (ITF+)" aria-label="View CompTIA IT Fundamentals+ (ITF+) certificate" data-cursor="view ↗">
-        <div class="cert-logo"><img src="certs/comptia.png" alt="CompTIA"></div>
-        <div><h3>CompTIA IT Fundamentals+ (ITF+)</h3><div class="by">CompTIA</div></div>
-        <div class="cert-foot"><span class="yr">Mar 28, 2025</span><span class="pill lime">✓ verified</span></div>
-        <span class="cert-view">View certificate ↗</span>
-      </article>
-    </div>
-    <div class="log sticker seminars" data-pop>
-      <h3>Seminars &amp; conferences <span class="pill pale">9</span></h3>
-      <ul>
-        <li><span class="spark"></span><span class="v">Regional Cybersecurity Conference 2025<small>Oct 3, 2025</small></span></li>
-        <li><span class="spark"></span><span class="v">AWS Introduction to Cloud Computing<small>Aug 17, 2025</small></span></li>
-        <li><span class="spark"></span><span class="v">1st Regional Blockchain Conference 2024: Innovate, Educate, and Elevate with Blockchain<small>Jul 19, 2024</small></span></li>
-      </ul>
-      <details class="more">
-        <summary>Show all seminars</summary>
-        <ul>
-          <li><span class="spark"></span><span class="v">Gonna be Golden: Level Up with GDGoC! (2025–2026 InfoSession)<small>Aug 9, 2025</small></span></li>
-          <li><span class="spark"></span><span class="v">IWEB Prelim Review Session<small>Jul 19, 2025</small></span></li>
-          <li><span class="spark"></span><span class="v">Web 101: A Beginner's Guide to Web Development<small>Jul 11, 2025</small></span></li>
-          <li><span class="spark"></span><span class="v">Cyber Resilience in the AI Era: Empowering Business Leaders and Developing Next-Gen Cybersecurity Professionals<small>Jan 31, 2025</small></span></li>
-          <li><span class="spark"></span><span class="v">Unlocking True Wealth: Three Transformative Concepts I Learned from the Markets<small>Sep 18, 2024</small></span></li>
-          <li><span class="spark"></span><span class="v">Beyond the Code: An Introduction to Web Design Principles<small>Aug 30, 2024</small></span></li>
-        </ul>
-      </details>
+    <div class="win certs-win" data-pop>
+      <div class="tb"><svg class="tb-ico"><use href="#i-cert"/></svg><span class="tb-t">C:\Sofia\Certificates</span><span class="tb-sub">7 objects</span><span class="tb-btns" aria-hidden="true"><i class="mn"></i><i class="mx"></i><i class="cl"></i></span></div>
+      <div class="certs-in">
+        <aside class="tasks-pane" aria-hidden="true">
+          <div class="tp"><b>File and Folder Tasks</b><span>▸ Open a certificate</span><span>▸ Verify credential</span></div>
+          <div class="tp"><b>Issued by</b><span>Cisco Networking Academy</span><span>freeCodeCamp</span><span>Simplilearn</span><span>CompTIA</span></div>
+        </aside>
+        <div class="certs">
+          <article class="cert" tabindex="0" role="button" data-cert="certs/ccna-introduction-to-networks.png" data-title="CCNA: Introduction to Networks" aria-label="View CCNA: Introduction to Networks certificate" data-tip="open certificate">
+            <div class="cert-logo"><img src="certs/cisco.png" alt="Cisco"></div>
+            <div class="cert-txt"><h3>CCNA: Introduction to Networks</h3><div class="by">Cisco Networking Academy</div></div>
+            <div class="cert-foot"><span class="yr">Sep 16, 2026</span><span class="ok">✓ verified</span></div>
+          </article>
+          <article class="cert" tabindex="0" role="button" data-cert="certs/intro-to-data-science.png" data-title="Introduction to Data Science" aria-label="View Introduction to Data Science certificate" data-tip="open certificate">
+            <div class="cert-logo"><img src="certs/cisco.png" alt="Cisco"></div>
+            <div class="cert-txt"><h3>Introduction to Data Science</h3><div class="by">Cisco Networking Academy</div></div>
+            <div class="cert-foot"><span class="yr">Apr 14, 2026</span><span class="ok">✓ verified</span></div>
+          </article>
+          <article class="cert" tabindex="0" role="button" data-cert="certs/javascript-essentials-1.png" data-title="JavaScript Essentials 1" aria-label="View JavaScript Essentials 1 certificate" data-tip="open certificate">
+            <div class="cert-logo"><img src="certs/cisco.png" alt="Cisco"></div>
+            <div class="cert-txt"><h3>JavaScript Essentials 1</h3><div class="by">Cisco Networking Academy</div></div>
+            <div class="cert-foot"><span class="yr">Oct 14, 2025</span><span class="ok">✓ verified</span></div>
+          </article>
+          <article class="cert" tabindex="0" role="button" data-cert="certs/responsive-web-design.png" data-title="Responsive Web Design" aria-label="View Responsive Web Design certificate" data-tip="open certificate">
+            <div class="cert-logo"><img src="certs/fcc.png" alt="freeCodeCamp"></div>
+            <div class="cert-txt"><h3>Responsive Web Design</h3><div class="by">freeCodeCamp</div></div>
+            <div class="cert-foot"><span class="yr">Oct 1, 2025</span><span class="ok">✓ verified</span></div>
+          </article>
+          <article class="cert" tabindex="0" role="button" data-cert="certs/git-training.png" data-title="Git Training" aria-label="View Git Training certificate" data-tip="open certificate">
+            <div class="cert-logo"><img src="certs/simplilearn.png" alt="Simplilearn"></div>
+            <div class="cert-txt"><h3>Git Training</h3><div class="by">Simplilearn</div></div>
+            <div class="cert-foot"><span class="yr">Sep 26, 2025</span><span class="ok">✓ verified</span></div>
+          </article>
+          <article class="cert" tabindex="0" role="button" data-cert="certs/intro-to-figma.png" data-title="Introduction to Figma" aria-label="View Introduction to Figma certificate" data-tip="open certificate">
+            <div class="cert-logo"><img src="certs/simplilearn.png" alt="Simplilearn"></div>
+            <div class="cert-txt"><h3>Introduction to Figma</h3><div class="by">Simplilearn</div></div>
+            <div class="cert-foot"><span class="yr">Sep 1, 2025</span><span class="ok">✓ verified</span></div>
+          </article>
+          <article class="cert" tabindex="0" role="button" data-cert="certs/it-fundamentals.png" data-title="CompTIA IT Fundamentals+ (ITF+)" aria-label="View CompTIA IT Fundamentals+ (ITF+) certificate" data-tip="open certificate">
+            <div class="cert-logo"><img src="certs/comptia.png" alt="CompTIA"></div>
+            <div class="cert-txt"><h3>CompTIA IT Fundamentals+ (ITF+)</h3><div class="by">CompTIA</div></div>
+            <div class="cert-foot"><span class="yr">Mar 28, 2025</span><span class="ok">✓ verified</span></div>
+          </article>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ══════ 06 CONTACT (night) ══════ -->
-<section class="chapter night" id="together" data-time="19:30" data-name="Contact">
+<div class="ticker-clip"><div class="ticker t-pink" aria-hidden="true"><div class="ticker-in"><span>let's build something</span><i>✦</i><span>flutter</span><i>✦</i><span>react</span><i>✦</i><span>python</span><i>✦</i><span>supabase</span><i>✦</i><span>claude api</span><i>✦</i><span>say hi ☺</span><i>✦</i><span>let's build something</span><i>✦</i><span>flutter</span><i>✦</i><span>react</span><i>✦</i><span>python</span><i>✦</i><span>supabase</span><i>✦</i><span>claude api</span><i>✦</i><span>say hi ☺</span><i>✦</i></div></div></div>
+<!-- ══════ 06 CONTACT ══════ -->
+<section class="sec" id="together" data-name="Contact" data-ico="i-mail">
   <div class="wrap">
-    <div class="ch-head" data-pop>
-      <span class="ch-tag"><span class="pill">Ch. 06</span><span class="pill pale">☾ 19:30</span></span>
-      <h2 class="ch-title outlined">let's work together</h2>
+    <div class="sec-head" data-pop>
+      <span class="sec-no">06</span>
+      <h2 class="sec-title">let's_<wbr>work_<wbr>together</h2>
     </div>
     <div class="contact">
-      <div class="contact-card sticker" data-pop>
-        <p>I'm looking for <b>software engineering or data internships</b>, and I'm open to part-time roles and project collaborations. Email or LinkedIn is the best way to reach me, and I usually reply within 1–2 days.</p>
-        <div class="mail-row">
-          <a class="mail" id="mail" href="mailto:sofiardmesa@gmail.com">sofiardmesa@gmail.com</a>
-          <button class="copy" id="copy" type="button">copy</button>
+      <div class="win mailer" data-pop>
+        <div class="tb"><svg class="tb-ico"><use href="#i-mail"/></svg><span class="tb-t">New Message</span><span class="tb-btns" aria-hidden="true"><i class="mn"></i><i class="mx"></i><i class="cl"></i></span></div>
+        <div class="toolbar">
+          <a class="tool send" href="mailto:sofiardmesa@gmail.com"><svg><use href="#i-mail"/></svg>Send</a>
+          <button class="tool" id="copy" type="button">⧉ <span>Copy address</span></button>
+          <a class="tool" href="https://linkedin.com/in/sofiademesa" target="_blank" rel="noopener">in LinkedIn ↗</a>
+          <a class="tool" href="https://github.com/sofiademesa" target="_blank" rel="noopener">⌥ GitHub ↗</a>
         </div>
-        <div class="links">
-          <a class="btn" href="https://linkedin.com/in/sofiademesa" target="_blank" rel="noopener">LinkedIn ↗</a>
-          <a class="btn" href="https://github.com/sofiademesa" target="_blank" rel="noopener">GitHub ↗</a>
+        <div class="fields">
+          <div class="field"><span class="fk">To:</span><a class="mail" id="mail" href="mailto:sofiardmesa@gmail.com">sofiardmesa@gmail.com</a></div>
+          <div class="field"><span class="fk">Subject:</span><span class="fv">Internship / collaboration</span></div>
+        </div>
+        <div class="mail-body">
+          <p>I'm looking for <b>software engineering or data internships</b>, and I'm open to part-time roles and project collaborations. Email or LinkedIn is the best way to reach me, and I usually reply within 1–2 days.</p>
+          <p class="sig">— Sofia<span class="caret"></span></p>
         </div>
       </div>
-      <aside class="note sticker" data-pop>
-        <h3>quick facts</h3>
+      <aside class="balloon" data-pop>
+        <span class="bl-x" aria-hidden="true">×</span>
+        <h3><svg><use href="#i-spark"/></svg>quick facts</h3>
         <p>3rd-year BS Computer Science, Holy Angel University (2024–2028)</p>
         <p>Open to internships and project collaborations</p>
         <p class="loc">Mabalacat City, Pampanga, PH · <span data-clock>--:--</span></p>
       </aside>
     </div>
-    <div class="end" data-pop>
-      <div class="bye outlined">thanks for spending the day ✦</div>
-      <div class="foot">
-        <span class="pill">© 2026 Sofia De Mesa</span>
-        <a class="pill lime" href="#top">☀ back to the top ↑</a>
-      </div>
-    </div>
   </div>
 </section>
 </main>
 
+<!-- ══════ TASKBAR + START MENU ══════ -->
+<div class="startmenu" id="startmenu" hidden>
+  <div class="sm-head"><img src="assets/portrait.jpg" alt="" width="900" height="1349"><div><b>Sofia De Mesa</b><span>CS @ Holy Angel University</span></div></div>
+  <div class="sm-cols">
+    <ul class="sm-l">
+      <li><a href="#hello"><svg><use href="#i-user"/></svg><span><b>About me</b><small>who I am</small></span></a></li>
+      <li><a href="#projects"><svg><use href="#i-folder"/></svg><span><b>Projects</b><small>4 programs</small></span></a></li>
+      <li><a href="#toolkit"><svg><use href="#i-chip"/></svg><span><b>Tech stack</b><small>38 components</small></span></a></li>
+      <li><a href="#experience"><svg><use href="#i-trophy"/></svg><span><b>Leadership</b><small>orgs &amp; events</small></span></a></li>
+      <li><a href="#credentials"><svg><use href="#i-cert"/></svg><span><b>Certifications</b><small>7 verified</small></span></a></li>
+    </ul>
+    <ul class="sm-r">
+      <li><a href="#together">Contact</a></li>
+      <li><a href="mailto:sofiardmesa@gmail.com">Email</a></li>
+      <li><a href="https://linkedin.com/in/sofiademesa" target="_blank" rel="noopener">LinkedIn ↗</a></li>
+      <li><a href="https://github.com/sofiademesa" target="_blank" rel="noopener">GitHub ↗</a></li>
+    </ul>
+  </div>
+  <div class="sm-foot"><a href="#top"><i class="pw"></i>Back to desktop</a></div>
+</div>
+
+<nav class="taskbar" aria-label="Sections">
+  <button class="start" id="start" type="button" aria-expanded="false" aria-controls="startmenu"><svg><use href="#i-spark"/></svg>start</button>
+  <div class="tasks" id="tasks"></div>
+  <div class="tray">
+    <span class="tray-st"><i></i><span>open to internships</span></span>
+    <span class="tray-clock" data-clock>--:--</span>
+  </div>
+</nav>
+
 <dialog class="viewer" id="viewer" aria-labelledby="viewer-title">
-  <div class="viewer-in sticker">
-    <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fn" id="viewer-title">certificate</span><button class="viewer-x" id="viewer-x" type="button" aria-label="Close">×</button></div>
+  <div class="win viewer-in">
+    <div class="tb"><svg class="tb-ico"><use href="#i-monitor"/></svg><span class="tb-t" id="viewer-title">certificate</span><button class="viewer-x" id="viewer-x" type="button" aria-label="Close">×</button></div>
     <div class="viewer-cap" id="viewer-cap" hidden></div>
     <div class="viewer-body">
       <img id="viewer-img" alt="">
       <div class="viewer-empty" id="viewer-empty" hidden>
-        <span class="spark"></span>
-        <p><b>Certificate image goes here.</b><br>Save it in your <code>certs</code> folder as<br><code id="viewer-path"></code></p>
+        <svg><use href="#i-cert"/></svg>
+        <p><b>Image goes here.</b><br>Save it in your <code>certs</code> folder as<br><code id="viewer-path"></code></p>
       </div>
     </div>
-    <div class="viewer-foot"><button class="btn" id="viewer-prev" type="button">← Prev</button><span class="yr" id="viewer-count"></span><button class="btn" id="viewer-next" type="button">Next →</button></div>
+    <div class="viewer-foot"><button class="gbtn sm" id="viewer-prev" type="button">◀ Prev</button><span id="viewer-count"></span><button class="gbtn sm" id="viewer-next" type="button">Next ▶</button></div>
   </div>
 </dialog>
 
+<!-- floating photo preview for leadership + seminar items (desktop hover) -->
+<div class="peek" id="peek" aria-hidden="true">
+  <div class="peek-in">
+    <div class="peek-tb"><span>preview.jpg</span><i></i></div>
+    <div class="peek-ph"><img id="peek-img" alt=""><span class="peek-n" id="peek-n" hidden></span></div>
+    <div class="peek-cap" id="peek-cap"></div>
+  </div>
+</div>
+
+<div class="tip" id="tip" aria-hidden="true"></div>
 
 <script src="script.js"></script>
 </body>

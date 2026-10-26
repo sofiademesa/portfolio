@@ -4,116 +4,181 @@
   const root = document.documentElement;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
-  const STAR = 'polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%)';
+  const store = {
+    get(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { sessionStorage.setItem(k, v); } catch (e) { /* private mode */ } }
+  };
+  root.classList.add('js');
+  if (!reduce) root.classList.add('motion');
 
-  /* tiny seeded random so the block frame looks the same every visit */
-  let seed = 7;
-  const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+  /* ───── boot screen (once per visit, click to skip) ───── */
+  let bootDelay = 0;
+  if (!reduce && !store.get('sofiaos-booted') && !location.hash) {
+    bootDelay = 1.5;
+    const boot = document.createElement('div');
+    boot.className = 'boot';
+    boot.setAttribute('aria-hidden', 'true');
+    boot.innerHTML = '<div class="boot-in"><svg><use href="#i-spark"/></svg><div class="boot-name">SofiaOS<sup>2026</sup></div><div class="boot-ed">portfolio edition</div><div class="boot-bar"><i><b></b></i></div><div class="boot-skip">click to skip</div></div>';
+    document.body.appendChild(boot);
+    const done = () => { boot.classList.add('out'); setTimeout(() => boot.remove(), 500); };
+    boot.addEventListener('click', done);
+    setTimeout(done, 1600);
+    store.set('sofiaos-booted', '1');
+  }
+  root.style.setProperty('--boot', bootDelay + 's');
 
-  /* clock */
+  /* ───── clock (Philippine time) ───── */
   const fmt = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'Asia/Manila' });
-  const tick = () => $$('[data-clock]').forEach(e => e.textContent = fmt.format(new Date()) + ' PHT');
+  const tick = () => $$('[data-clock]').forEach(e => e.textContent = fmt.format(new Date()) + (e.classList.contains('tray-clock') ? '' : ' PHT'));
   tick(); setInterval(tick, 15000);
 
-  /* name letters pop in one by one */
-  let delay = 0.35;
-  $$('#name .row').forEach(row => {
-    const txt = row.textContent; row.textContent = '';
-    [...txt].forEach(ch => {
-      const s = document.createElement('span'); s.className = 'l'; s.textContent = ch === ' ' ? ' ' : ch;
-      s.style.animationDelay = delay.toFixed(2) + 's'; delay += 0.05; row.appendChild(s);
+  /* ───── split text into letters (keeps <wbr> line-break hints) ───── */
+  function splitLetters(el, cls, start = 0, step = 1) {
+    let i = start;
+    [...el.childNodes].forEach(node => {
+      if (node.nodeType !== 3) return;
+      // each run of text stays together as one word, so lines only break at <wbr>
+      const frag = document.createElement('span'); frag.className = 'wd';
+      [...node.textContent].forEach(ch => {
+        const s = document.createElement('span');
+        s.className = cls; s.textContent = ch === ' ' ? ' ' : ch;
+        s.style.setProperty('--i', i); i += step; frag.appendChild(s);
+      });
+      node.replaceWith(frag);
     });
-  });
+    return i;
+  }
 
-  /* starbursts behind chapter titles */
-  const burst = (() => { const pts = []; for (let i = 0; i < 32; i++) { const a = i / 32 * Math.PI * 2, r = i % 2 ? 36 : 50; pts.push(`${(50 + r * Math.cos(a)).toFixed(1)}% ${(50 + r * Math.sin(a)).toFixed(1)}%`); } return `polygon(${pts.join(',')})`; })();
-  $$('.burst').forEach(b => b.style.clipPath = burst);
+  /* ───── hero name: letters pop in, then wave + glitch now and then ───── */
+  const name = $('.name');
+  let n = 0;
+  $$('.name > span').forEach(row => { n = splitLetters(row, 'l', n); });
+  if (!reduce && name) {
+    const wave = () => { name.classList.remove('wave'); void name.offsetWidth; name.classList.add('wave'); };
+    const glitch = () => { name.classList.add('glitch'); setTimeout(() => name.classList.remove('glitch'), 380); };
+    setTimeout(() => { wave(); setInterval(wave, 7000); }, (bootDelay + 2.6) * 1000);
+    setTimeout(() => setInterval(() => { if (Math.random() < .55) glitch(); }, 3400), (bootDelay + 3.5) * 1000);
+    $$('.name .l').forEach(l => l.addEventListener('pointerenter', () => { l.classList.remove('jump'); void l.offsetWidth; l.classList.add('jump'); }));
+  }
 
-  /* landing: pixel-block frame */
-  const blocks = $('#blocks');
-  const SKY = ['#ffffff', '#e4f0ff', '#cfe2ff', '#a9cbff', '#7fb0ff', '#5a96ff'];
-  const GRASS = ['#d6f36a', '#b9e43c', '#9fd12a', '#7fb81f', '#5f9a18'];
-  function buildBlocks() {
-    blocks.innerHTML = '';
-    seed = 7;
-    const W = blocks.clientWidth, H = blocks.clientHeight;
-    const ts = W < 600 ? 26 : W < 1000 ? 36 : 44, step = ts + 3;
-    blocks.style.setProperty('--ts', ts + 'px');
-    const cols = Math.ceil(W / step), rows = Math.ceil(H / step);
-    const frag = document.createDocumentFragment();
-    const add = (c, r, color, d) => {
-      const t = document.createElement('i'); t.className = 'tile';
-      t.style.left = (c * step) + 'px'; t.style.top = (r * step) + 'px';
-      t.style.setProperty('--c', color); t.style.setProperty('--dl', d.toFixed(2) + 's');
-      frag.appendChild(t);
-    };
-    const sideW = W < 600 ? 1 : 2;
-    let topH = 2, botH = 3;
-    for (let c = 0; c < cols; c++) {
-      topH = Math.max(1, Math.min(3, topH + (rnd() < .35 ? (rnd() < .5 ? -1 : 1) : 0)));
-      botH = Math.max(2, Math.min(4, botH + (rnd() < .35 ? (rnd() < .5 ? -1 : 1) : 0)));
-      const edge = c < sideW || c >= cols - sideW;
-      const tH = edge ? Math.ceil(rows * .45) : topH;
-      const bH = edge ? Math.ceil(rows * .3) : botH;
-      for (let r = 0; r < tH; r++) add(c, r, SKY[Math.min(SKY.length - 1, Math.floor(rnd() * 3 + r))], .05 + r * .06 + c * .012);
-      for (let r = 0; r < bH; r++) add(c, rows - 1 - r, GRASS[Math.min(GRASS.length - 1, Math.floor(rnd() * 2 + r))], .2 + r * .06 + c * .012);
+  /* ───── section titles: letters drop in when you reach them ───── */
+  $$('.sec-title').forEach(h => splitLetters(h, 'ch'));
+
+  /* ───── stagger indexes for hero pieces + lists ───── */
+  const index = (sel, r = document) => $$(sel, r).forEach((el, i) => el.style.setProperty('--i', i));
+  index('.dicon'); index('.hero-cta .gbtn');
+  $$('.win').forEach(w => { index('.feat li', w); index('.chip', w); index('.stack span', w); });
+  index('.ids .id'); index('.certs .cert'); index('.groups .group');
+  $$('.strip').forEach(s => index('.ev', s));
+  index('.chat > *');
+
+  /* ───── terminal line types itself ───── */
+  const typed = $('#typed');
+  if (typed && !reduce) {
+    const full = typed.textContent; typed.textContent = ''; let i = 0;
+    const step = () => { typed.textContent = full.slice(0, ++i); if (i < full.length) setTimeout(step, 55 + Math.random() * 60); };
+    setTimeout(step, (bootDelay + .5) * 1000);
+  }
+
+  /* ───── kiosk keyboard ───── */
+  const kb = $('#kboard');
+  if (kb) {
+    const frag = document.createDocumentFragment(), keys = [];
+    for (let r = 0; r < 4; r++) for (let c = 0; c < 11; c++) {
+      const k = document.createElement('i');
+      if (c === 10) k.className = ['y', 'r', 'g', ''][r];
+      frag.appendChild(k); if (c < 10) keys.push(k);
     }
-    // a few twinkles
-    const tw = [['#ffd84d', .08, .2], ['#c8f04a', .9, .32], ['#ff8fd0', .82, .7], ['#ffffff', .14, .74], ['#ffd84d', .52, .1]];
-    tw.forEach(([c, x, y], i) => {
-      const s = document.createElement('i'); s.className = 'twinkle';
-      s.style.cssText = `left:${x * 100}%;top:${y * 100}%;--c:${c};--s:${18 + i * 4}px;animation-delay:${i * .3}s`;
-      frag.appendChild(s);
+    kb.appendChild(frag);
+    if (!reduce) setInterval(() => { // someone's typing on it
+      const k = keys[Math.floor(Math.random() * keys.length)];
+      k.classList.add('on'); setTimeout(() => k.classList.remove('on'), 160);
+    }, 240);
+  }
+
+  /* ───── twinkling pixel stars on the wallpaper ───── */
+  const ds = $('#deskstars');
+  if (ds) {
+    let seed = 11; const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+    const cols = ['#ffffff', '#b8ef3c', '#ffe45c', '#ff9fd8', '#9fdcff'];
+    for (let i = 0; i < 22; i++) {
+      const s = document.createElement('i');
+      s.style.cssText = `left:${(rnd() * 100).toFixed(1)}%;top:${(rnd() * 60).toFixed(1)}%;--s:${(6 + rnd() * 10).toFixed(0)}px;--c:${cols[i % cols.length]};--d:${(2 + rnd() * 3).toFixed(1)}s;animation-delay:-${(rnd() * 4).toFixed(1)}s`;
+      ds.appendChild(s);
+    }
+  }
+
+  /* ───── hero parallax: stickers + kiosk lean toward the cursor ───── */
+  const hero = $('.hero');
+  if (fine && !reduce && hero) {
+    let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
+    const loop = () => {
+      cx += (tx - cx) * .08; cy += (ty - cy) * .08;
+      hero.style.setProperty('--mx', cx.toFixed(3)); hero.style.setProperty('--my', cy.toFixed(3));
+      raf = Math.abs(tx - cx) + Math.abs(ty - cy) > .001 ? requestAnimationFrame(loop) : 0;
+    };
+    hero.addEventListener('pointermove', e => {
+      const r = hero.getBoundingClientRect();
+      tx = (e.clientX - r.left) / r.width - .5; ty = (e.clientY - r.top) / r.height - .5;
+      if (!raf) raf = requestAnimationFrame(loop);
     });
-    blocks.appendChild(frag);
-  }
-  buildBlocks();
-  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(buildBlocks, 200); });
-
-  /* stars for the evening */
-  const stars = $('#stars');
-  for (let i = 0; i < 46; i++) {
-    const s = document.createElement('i');
-    s.style.cssText = `left:${(rnd() * 100).toFixed(1)}%;top:${(rnd() * 75).toFixed(1)}%;--s:${(4 + rnd() * 10).toFixed(0)}px;--d:${(1.2 + rnd() * 2.5).toFixed(1)}s;animation-delay:${(rnd() * 2).toFixed(1)}s`;
-    stars.appendChild(s);
+    hero.addEventListener('pointerleave', () => { tx = ty = 0; if (!raf) raf = requestAnimationFrame(loop); });
   }
 
-  /* the sky over one day: morning → noon → afternoon → sunset → night */
-  const STOPS = [
-    { p: 0.00, top: [90, 160, 255], bot: [214, 234, 255], sun: [255, 216, 77] },
-    { p: 0.30, top: [30, 110, 255], bot: [160, 210, 255], sun: [255, 224, 90] },
-    { p: 0.58, top: [64, 128, 245], bot: [255, 220, 176], sun: [255, 196, 80] },
-    { p: 0.80, top: [84, 70, 190], bot: [255, 146, 118], sun: [255, 130, 70] },
-    { p: 0.94, top: [16, 26, 84], bot: [52, 56, 150], sun: [255, 110, 60] },
-    { p: 1.00, top: [10, 18, 64], bot: [40, 44, 128], sun: [255, 110, 60] },
-  ];
-  const ease = t => t * t * (3 - 2 * t);
-  const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
-  const sun = $('#sun'), hud = $('#hud'), hudBar = $('.bar i', hud);
-  function paint() {
+  /* ───── sparkle trail behind the cursor ───── */
+  if (fine && !reduce) {
+    const cols = ['#b8ef3c', '#ff9fd8', '#9fdcff', '#ffe45c'];
+    let last = 0, k = 0;
+    addEventListener('pointermove', e => {
+      const now = performance.now(); if (now - last < 45) return; last = now;
+      if (e.target.closest && e.target.closest('dialog, .startmenu')) return;
+      const s = document.createElement('i');
+      s.className = 'trail';
+      s.style.cssText = `left:${e.clientX}px;top:${e.clientY}px;--c:${cols[k++ % cols.length]};--dx:${(Math.random() * 30 - 15).toFixed(0)}px;--sz:${(8 + Math.random() * 8).toFixed(0)}px`;
+      document.body.appendChild(s);
+      setTimeout(() => s.remove(), 750);
+    }, { passive: true });
+  }
+
+  /* ───── taskbar: one button per section, the current one stays pressed ───── */
+  const tasks = $('#tasks');
+  const secs = $$('.sec');
+  secs.forEach(s => {
+    const a = document.createElement('a');
+    a.className = 'task'; a.href = '#' + s.id; a.dataset.for = s.id;
+    a.innerHTML = `<svg aria-hidden="true"><use href="#${s.dataset.ico}"/></svg><span>${s.dataset.name}</span>`;
+    tasks.appendChild(a);
+  });
+  const setTask = id => $$('.task', tasks).forEach(t => t.classList.toggle('on', t.dataset.for === id));
+  const io1 = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) setTask(e.target.id); }), { rootMargin: '-45% 0px -50% 0px' });
+  secs.forEach(s => io1.observe(s));
+
+  /* scroll progress line on top of the taskbar */
+  const bar = $('.taskbar');
+  let sTick = false;
+  const onScroll = () => {
     const max = root.scrollHeight - innerHeight;
-    const p = max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
-    let i = 0; while (i < STOPS.length - 2 && p > STOPS[i + 1].p) i++;
-    const a = STOPS[i], b = STOPS[i + 1], t = ease(Math.min(1, Math.max(0, (p - a.p) / (b.p - a.p))));
-    root.style.setProperty('--sky-top', `rgb(${mix(a.top, b.top, t)})`);
-    root.style.setProperty('--sky-bot', `rgb(${mix(a.bot, b.bot, t)})`);
-    root.style.setProperty('--sun-c', `rgb(${mix(a.sun, b.sun, t)})`);
-    const night = ease(Math.min(1, Math.max(0, (p - .78) / .17)));
-    root.style.setProperty('--night', night.toFixed(3));
-    // the sun rises on the left, peaks mid-page, sets on the right
-    const sp = Math.min(1, p / .9);
-    const x = innerWidth * (.1 + .8 * sp), y = innerHeight * (.62 - Math.sin(Math.PI * sp) * .5 + sp * sp * .35);
-    sun.style.transform = `translate3d(${x}px,${y}px,0)`;
-    hudBar.parentElement.style.setProperty('--p', p.toFixed(3));
-    hud.classList.toggle('off', scrollY < innerHeight * .6);
-    hud.classList.toggle('is-night', night > .5);
-  }
-  let ticking = false;
-  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { paint(); ticking = false; }); } }, { passive: true });
-  addEventListener('resize', paint); paint();
+    bar.style.setProperty('--sp', max > 0 ? Math.min(1, scrollY / max).toFixed(4) : 0);
+    if (scrollY < innerHeight * .4) setTask('');
+    sTick = false;
+  };
+  addEventListener('scroll', () => { if (!sTick) { sTick = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  onScroll();
 
+  /* ───── start menu ───── */
+  const startBtn = $('#start'), menu = $('#startmenu');
+  const setMenu = open => { menu.hidden = !open; startBtn.setAttribute('aria-expanded', String(open)); if (open) { const f = $('a', menu); f && f.focus({ preventScroll: true }); } };
+  startBtn.addEventListener('click', e => { e.stopPropagation(); setMenu(menu.hidden); });
+  menu.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('click', e => { if (!menu.hidden && !menu.contains(e.target)) setMenu(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !menu.hidden) { setMenu(false); startBtn.focus(); } });
 
-  /* viewer: certificates and project screenshots open in the same pop-up */
+  /* ───── tech stack count ───── */
+  const cc = $('#chip-count'); if (cc) cc.textContent = `${$$('.chip').length} components installed`;
+
+  /* ───── viewer: certificates, project screenshots and event photos ───── */
+  const tip = $('#tip');
+  function hideTip() { tip.classList.remove('on'); }
   (() => {
     const dlg = $('#viewer'), img = $('#viewer-img'), empty = $('#viewer-empty'), cap = $('#viewer-cap');
     let items = [], cur = 0;
@@ -125,14 +190,12 @@
       $('#viewer-path').textContent = it.src.replace(/^certs\//, '');
       img.hidden = false; empty.hidden = true; img.alt = it.alt;
       img.onerror = () => { img.hidden = true; empty.hidden = !it.isCert; };
+      img.classList.remove('swap'); void img.offsetWidth; img.classList.add('swap');
       img.src = it.src;
       const many = items.length > 1;
       $('#viewer-prev').style.visibility = $('#viewer-next').style.visibility = many ? 'visible' : 'hidden';
     };
-    // the open dialog sits above the page, so carry the sparkle cursor into it
-    const cursorEl = $('#cursor');
-    const open = (list, i) => { items = list; show(i); if (cursorEl) dlg.appendChild(cursorEl); if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', ''); };
-    dlg.addEventListener('close', () => { if (cursorEl) document.body.insertBefore(cursorEl, document.body.firstChild); });
+    const open = (list, i) => { items = list; show(i); hideTip(); if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', ''); };
     const close = () => { dlg.close ? dlg.close() : dlg.removeAttribute('open'); };
     const certs = $$('[data-cert]').map(c => ({ src: c.dataset.cert, title: c.dataset.title, alt: c.dataset.title + ' certificate', isCert: true }));
     $$('[data-cert]').forEach((c, i) => {
@@ -148,80 +211,127 @@
     $('#viewer-next').addEventListener('click', () => show(cur + 1));
     dlg.addEventListener('click', e => { if (e.target === dlg) close(); });
     dlg.addEventListener('keydown', e => { if (items.length > 1) { if (e.key === 'ArrowLeft') show(cur - 1); if (e.key === 'ArrowRight') show(cur + 1); } });
+
+    /* event photos: every leadership / seminar item has a data-photo slot.
+       Items only light up once their photo actually exists in /events.
+       Desktop: a preview window follows the cursor. Touch: tap opens the viewer. */
+    const peek = $('#peek'), peekImg = $('#peek-img'), peekCap = $('#peek-cap'), peekN = $('#peek-n');
+    const activate = (li, srcs) => {
+      const title = li.dataset.title, date = li.dataset.meta || '', n = srcs.length;
+      li.classList.add('has-photo');
+      li.tabIndex = 0; li.setAttribute('role', 'button');
+      li.setAttribute('aria-label', `View ${n > 1 ? n + ' photos' : 'photo'}: ${title}`);
+      const cam = document.createElement('span'); cam.className = 'cam'; cam.setAttribute('aria-hidden', 'true');
+      cam.innerHTML = `<svg><use href="#i-cam"/></svg><b>${n > 1 ? n : 'pic'}</b>`; li.appendChild(cam);
+      const list = srcs.map((src, k) => ({ src, title: n > 1 ? 'event photos' : 'event photo', caption: [title, date, n > 1 ? `photo ${k + 1} of ${n}` : ''].filter(Boolean).join(' · '), alt: `${title}, photo ${k + 1}` }));
+      const go = () => { hidePeek(); open(list, 0); };
+      li.addEventListener('click', go);
+      li.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+      if (fine) {
+        li.addEventListener('pointerenter', e => showPeek(srcs, title, e));
+        li.addEventListener('pointermove', movePeek);
+        li.addEventListener('pointerleave', hidePeek);
+      }
+    };
+    const probe = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return; probe.unobserve(e.target);
+      $$('[data-photo]', e.target).forEach(li => {
+        const srcs = li.dataset.photo.split(',').map(s => s.trim()).filter(Boolean);
+        if (!srcs.length) return;
+        const test = new Image(); test.onload = () => activate(li, srcs); test.src = srcs[0];
+      });
+    }), { rootMargin: '600px 0px' });
+    $$('.ids, .strip').forEach(l => probe.observe(l));
+
+    let peekTimer = 0, peekOn = false;
+    function showPeek(srcs, title, e) {
+      clearInterval(peekTimer);
+      let k = 0;
+      peekImg.src = srcs[0]; peekImg.alt = '';
+      peekCap.textContent = title;
+      peekN.hidden = srcs.length < 2; peekN.textContent = `1/${srcs.length}`;
+      peek.style.setProperty('--tilt', (Math.random() * 4 - 2).toFixed(1) + 'deg');
+      if (srcs.length > 1 && !reduce) peekTimer = setInterval(() => {
+        k = (k + 1) % srcs.length; peekImg.classList.remove('swap'); void peekImg.offsetWidth;
+        peekImg.src = srcs[k]; peekImg.classList.add('swap'); peekN.textContent = `${k + 1}/${srcs.length}`;
+      }, 1400);
+      movePeek(e); peekOn = true; peek.classList.add('on');
+    }
+    function movePeek(e) {
+      const w = peek.offsetWidth, h = peek.offsetHeight, gap = 24;
+      let x = e.clientX + gap, ox = '0%';
+      if (x + w > innerWidth - 12) { x = e.clientX - w - gap; ox = '100%'; }
+      const y = Math.min(innerHeight - h - 12, Math.max(12, e.clientY - h / 2));
+      peek.style.setProperty('--ox', ox);
+      peek.style.transform = `translate3d(${Math.max(12, x)}px,${y}px,0)`;
+    }
+    function hidePeek() { if (!peekOn) return; peekOn = false; clearInterval(peekTimer); peek.classList.remove('on'); }
+    addEventListener('scroll', hidePeek, { passive: true });
   })();
 
-  /* HUD shows which part of the day you're in */
-  const hudText = $('#hud-text');
-  const io1 = new IntersectionObserver(es => es.forEach(e => {
-    if (e.isIntersecting) { const txt = `${e.target.dataset.time} · ${e.target.dataset.name}`; if (hudText.textContent !== txt) { hudText.textContent = txt; hudText.classList.remove('tick'); void hudText.offsetWidth; hudText.classList.add('tick'); } }
-  }), { rootMargin: '-40% 0px -55% 0px' });
-  $$('.chapter').forEach(s => io1.observe(s));
-
-  /* number every child so CSS can stagger it */
-  const index = (sel, root = document) => $$(sel, root).forEach((el, i) => el.style.setProperty('--i', i));
-  $$('.ch-title').forEach(h => { // split titles into words → letters
-    const words = h.textContent.trim().split(/\s+/); h.textContent = ''; let i = 0;
-    words.forEach((w, wi) => {
-      const wd = document.createElement('span'); wd.className = 'wd';
-      [...w].forEach(c => { const l = document.createElement('span'); l.className = 'tl'; l.textContent = c; l.style.setProperty('--i', i++); wd.appendChild(l); });
-      h.appendChild(wd); if (wi < words.length - 1) h.appendChild(document.createTextNode(' '));
-    });
+  /* ───── event strips: swipe or step through ───── */
+  $$('.strip-win').forEach(win => {
+    const strip = $('.strip', win), prev = $('.strip-prev', win), next = $('.strip-next', win), count = $('.strip-count', win);
+    const cards = $$('.ev', strip);
+    const step = () => { const c = cards[0]; return c ? c.offsetWidth + parseFloat(getComputedStyle(strip).columnGap || 12) : strip.clientWidth; };
+    const visible = () => { const r = strip.getBoundingClientRect(); return cards.map((c, i) => [i, c.getBoundingClientRect()]).filter(([, cr]) => cr.left >= r.left - 4 && cr.right <= r.right + 4).map(([i]) => i); };
+    const update = () => {
+      const v = visible(); const first = v.length ? v[0] : 0, last = v.length ? v[v.length - 1] : 0;
+      count.textContent = first === last ? `${first + 1} of ${cards.length}` : `${first + 1}–${last + 1} of ${cards.length}`;
+      prev.disabled = strip.scrollLeft < 4;
+      next.disabled = strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 4;
+    };
+    const go = dir => { const n = Math.max(1, visible().length); strip.scrollBy({ left: dir * step() * n, behavior: reduce ? 'auto' : 'smooth' }); };
+    prev.addEventListener('click', () => go(-1));
+    next.addEventListener('click', () => go(1));
+    strip.addEventListener('keydown', e => { if (e.target !== strip) return; if (e.key === 'ArrowRight') { e.preventDefault(); go(1); } if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); } });
+    let t; strip.addEventListener('scroll', () => { cancelAnimationFrame(t); t = requestAnimationFrame(update); }, { passive: true });
+    addEventListener('resize', update); update();
   });
-  $$('.hello-card').forEach(c => { index('p', c); index('.stat', c); index('.edu li', c); });
-  $$('.select').forEach(c => { index('.group h3', c); index('.chip', c); });
-  $$('.win').forEach(c => { index('.art span', c); index('.win-body > *', c); });
-  $$('.log').forEach(c => index('li', c));
-  $$('.certs .cert').forEach((c, i) => { c.style.transitionDelay = (i * 90) + 'ms'; c.querySelectorAll('.cert-logo,.pill').forEach(x => x.style.animationDelay = (0.15 + i * 0.09 + (x.classList.contains('pill') ? .45 : 0)) + 's'); });
-  function onGo(el) { // numbers count up from zero
-    if (reduce) return;
-    $$('.stat .n', el).forEach((n, i) => {
-      const end = +n.textContent; if (!end) return;
-      const t0 = performance.now() + 450 + i * 90;
-      const step = now => { const f = Math.min(1, Math.max(0, (now - t0) / 900)); n.textContent = Math.round(end * (1 - Math.pow(1 - f, 3))); if (f < 1) requestAnimationFrame(step); };
-      n.textContent = '0'; requestAnimationFrame(step);
-    });
-  }
 
-  /* stickers pop in as you reach them */
-  if (!reduce) {
+  /* ───── things animate in as you scroll to them ───── */
+  const pops = $$('[data-pop], .ticker-clip');
+  if (!reduce && 'IntersectionObserver' in window) {
     const io = new IntersectionObserver(es => es.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.remove('pre'); e.target.classList.add('in-view'); io.unobserve(e.target); onGo(e.target); }
-    }), { rootMargin: '0px 0px -10% 0px' });
-    let n = 0;
-    $$('[data-pop]').forEach(el => {
-      if (el.getBoundingClientRect().top > innerHeight) {
-        el.classList.add('pre'); el.style.transitionDelay = ((n++ % 3) * 90) + 'ms';
-      }
+      if (e.isIntersecting) { e.target.classList.remove('pre'); e.target.classList.add('in-view'); io.unobserve(e.target); }
+    }), { rootMargin: '0px 0px -10% 0px', threshold: .05 });
+    pops.forEach(el => {
+      if (el.getBoundingClientRect().top > innerHeight * .9) el.classList.add('pre');
+      else el.classList.add('in-view');
       io.observe(el);
     });
+  } else pops.forEach(el => el.classList.add('in-view'));
+
+  /* ───── tilt: cards lean toward the cursor ───── */
+  if (fine && !reduce) {
+    $$('.cert, .shot-screen, .ev, .id-av').forEach(el => {
+      el.addEventListener('pointermove', e => {
+        const r = el.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+        el.style.setProperty('--rx', (-y * 8).toFixed(2) + 'deg'); el.style.setProperty('--ry', (x * 10).toFixed(2) + 'deg');
+      });
+      el.addEventListener('pointerleave', () => { el.style.setProperty('--rx', '0deg'); el.style.setProperty('--ry', '0deg'); });
+    });
   }
 
-  /* copy email */
+  /* ───── copy email ───── */
   $('#copy').addEventListener('click', e => {
-    const btn = e.currentTarget, done = m => { btn.textContent = m; setTimeout(() => btn.textContent = 'copy', 1800); };
-    const fallback = () => { const r = document.createRange(); r.selectNodeContents($('#mail')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); done('selected'); };
-    try { navigator.clipboard.writeText('sofiardmesa@gmail.com').then(() => done('copied ✦'), fallback); } catch (err) { fallback(); }
+    const btn = e.currentTarget, lbl = $('span', btn), done = m => { lbl.textContent = m; btn.classList.add('ok-flash'); setTimeout(() => { lbl.textContent = 'Copy address'; btn.classList.remove('ok-flash'); }, 1800); };
+    const fallback = () => { const r = document.createRange(); r.selectNodeContents($('#mail')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); done('Selected'); };
+    try { navigator.clipboard.writeText('sofiardmesa@gmail.com').then(() => done('Copied ✓'), fallback); } catch (err) { fallback(); }
   });
 
-  /* sparkle cursor */
+  /* ───── yellow tooltips (desktop) ───── */
   if (fine) {
-    root.classList.add('cursor-on');
-    const cur = $('#cursor'), lbl = $('#cursor-lbl');
-    let x = -100, y = -100, cx = -100, cy = -100, seen = false;
-    addEventListener('pointermove', e => { x = e.clientX; y = e.clientY; if (!seen) { cx = x; cy = y; seen = true; } cur.classList.remove('is-hidden'); }, { passive: true });
-    root.addEventListener('pointerleave', () => cur.classList.add('is-hidden'));
+    let on = null;
     document.addEventListener('pointerover', e => {
-      const t = e.target.closest('[data-cursor], a, button');
-      cur.classList.toggle('is-link', !!t);
-      cur.classList.toggle('is-view', !!(t && t.dataset.cursor));
-      if (t && t.dataset.cursor) lbl.textContent = t.dataset.cursor;
+      const t = e.target.closest('[data-tip]');
+      if (t === on) return; on = t;
+      if (!t) return hideTip();
+      tip.textContent = t.dataset.tip;
+      tip.classList.add('on');
     });
-    const loop = () => {
-      const k = reduce ? 1 : .35;
-      cx += (x - cx) * k; cy += (y - cy) * k;
-      cur.style.transform = `translate3d(${cx}px,${cy}px,0)`;
-      requestAnimationFrame(loop);
-    };
-    loop();
+    addEventListener('pointermove', e => { if (on) tip.style.transform = `translate3d(${e.clientX + 14}px,${e.clientY + 20}px,0)`; }, { passive: true });
+    addEventListener('scroll', hideTip, { passive: true });
   }
 })();
