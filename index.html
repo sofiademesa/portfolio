@@ -11,6 +11,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Silkscreen:wght@400;700&family=VT323&family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<script>
+  /* decide about the boot screen before anything paints, so the desktop never flashes first */
+  (function () {
+    try {
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !location.hash && !sessionStorage.getItem('sofiaos-booted'))
+        document.documentElement.classList.add('booting');
+    } catch (e) {}
+  })();
+</script>
 </head>
 <body>
 
@@ -399,42 +408,42 @@
     <div class="win certs-win" data-pop>
       <div class="tb"><svg class="tb-ico"><use href="#i-cert"/></svg><span class="tb-t">C:\Sofia\Certificates</span><span class="tb-sub">7 objects</span><span class="tb-btns" aria-hidden="true"><i class="mn"></i><i class="mx"></i><i class="cl"></i></span></div>
       <div class="certs-in">
-        <aside class="tasks-pane" aria-hidden="true">
-          <div class="tp"><b>File and Folder Tasks</b><span>▸ Open a certificate</span><span>▸ Verify credential</span></div>
+        <aside class="tasks-pane">
+          <div class="tp"><b>File and Folder Tasks</b><button type="button" id="open-first">▸ Open a certificate</button><span class="tp-tip">Tap <strong>✓ verify</strong> on a card to check it with the issuer.</span></div>
           <div class="tp"><b>Issued by</b><span>Cisco Networking Academy</span><span>freeCodeCamp</span><span>Simplilearn</span><span>CompTIA</span></div>
         </aside>
         <div class="certs">
-          <article class="cert" tabindex="0" role="button" data-cert="certs/ccna-introduction-to-networks.png" data-title="CCNA: Introduction to Networks" aria-label="View CCNA: Introduction to Networks certificate" data-tip="open certificate">
+          <article class="cert" tabindex="0" role="button" data-cert="certs/ccna-introduction-to-networks.png" data-title="CCNA: Introduction to Networks" data-verify="https://www.credly.com/badges/4e17477c-31f2-41f7-b957-b1e6e7f1f7c5/public_url" data-cred-id="" aria-label="View CCNA: Introduction to Networks certificate" data-tip="open certificate">
             <div class="cert-logo"><img src="certs/cisco.png" alt="Cisco"></div>
             <div class="cert-txt"><h3>CCNA: Introduction to Networks</h3><div class="by">Cisco Networking Academy</div></div>
             <div class="cert-foot"><span class="yr">Sep 16, 2026</span><span class="ok">✓ verified</span></div>
           </article>
-          <article class="cert" tabindex="0" role="button" data-cert="certs/intro-to-data-science.png" data-title="Introduction to Data Science" aria-label="View Introduction to Data Science certificate" data-tip="open certificate">
-            <div class="cert-logo"><img src="certs/cisco.png" alt="Cisco"></div>
-            <div class="cert-txt"><h3>Introduction to Data Science</h3><div class="by">Cisco Networking Academy</div></div>
+          <article class="cert" tabindex="0" role="button" data-cert="certs/intro-to-data-science.png" data-title="Introduction to Data Science" data-verify="" data-cred-id="10099739" aria-label="View Introduction to Data Science certificate" data-tip="open certificate">
+            <div class="cert-logo"><img src="certs/simplilearn.png" alt="Simplilearn"></div>
+            <div class="cert-txt"><h3>Introduction to Data Science</h3><div class="by">Simplilearn</div></div>
             <div class="cert-foot"><span class="yr">Apr 14, 2026</span><span class="ok">✓ verified</span></div>
           </article>
-          <article class="cert" tabindex="0" role="button" data-cert="certs/javascript-essentials-1.png" data-title="JavaScript Essentials 1" aria-label="View JavaScript Essentials 1 certificate" data-tip="open certificate">
+          <article class="cert" tabindex="0" role="button" data-cert="certs/javascript-essentials-1.png" data-title="JavaScript Essentials 1" data-verify="" data-cred-id="" aria-label="View JavaScript Essentials 1 certificate" data-tip="open certificate">
             <div class="cert-logo"><img src="certs/cisco.png" alt="Cisco"></div>
             <div class="cert-txt"><h3>JavaScript Essentials 1</h3><div class="by">Cisco Networking Academy</div></div>
             <div class="cert-foot"><span class="yr">Oct 14, 2025</span><span class="ok">✓ verified</span></div>
           </article>
-          <article class="cert" tabindex="0" role="button" data-cert="certs/responsive-web-design.png" data-title="Responsive Web Design" aria-label="View Responsive Web Design certificate" data-tip="open certificate">
+          <article class="cert" tabindex="0" role="button" data-cert="certs/responsive-web-design.png" data-title="Responsive Web Design" data-verify="https://freecodecamp.org/certification/sofiademesa/responsive-web-design" data-cred-id="" aria-label="View Responsive Web Design certificate" data-tip="open certificate">
             <div class="cert-logo"><img src="certs/fcc.png" alt="freeCodeCamp"></div>
             <div class="cert-txt"><h3>Responsive Web Design</h3><div class="by">freeCodeCamp</div></div>
             <div class="cert-foot"><span class="yr">Oct 1, 2025</span><span class="ok">✓ verified</span></div>
           </article>
-          <article class="cert" tabindex="0" role="button" data-cert="certs/git-training.png" data-title="Git Training" aria-label="View Git Training certificate" data-tip="open certificate">
+          <article class="cert" tabindex="0" role="button" data-cert="certs/git-training.png" data-title="Git Training" data-verify="" data-cred-id="" aria-label="View Git Training certificate" data-tip="open certificate">
             <div class="cert-logo"><img src="certs/simplilearn.png" alt="Simplilearn"></div>
             <div class="cert-txt"><h3>Git Training</h3><div class="by">Simplilearn</div></div>
             <div class="cert-foot"><span class="yr">Sep 26, 2025</span><span class="ok">✓ verified</span></div>
           </article>
-          <article class="cert" tabindex="0" role="button" data-cert="certs/intro-to-figma.png" data-title="Introduction to Figma" aria-label="View Introduction to Figma certificate" data-tip="open certificate">
+          <article class="cert" tabindex="0" role="button" data-cert="certs/intro-to-figma.png" data-title="Introduction to Figma" data-verify="" data-cred-id="" aria-label="View Introduction to Figma certificate" data-tip="open certificate">
             <div class="cert-logo"><img src="certs/simplilearn.png" alt="Simplilearn"></div>
             <div class="cert-txt"><h3>Introduction to Figma</h3><div class="by">Simplilearn</div></div>
             <div class="cert-foot"><span class="yr">Sep 1, 2025</span><span class="ok">✓ verified</span></div>
           </article>
-          <article class="cert" tabindex="0" role="button" data-cert="certs/it-fundamentals.png" data-title="CompTIA IT Fundamentals+ (ITF+)" aria-label="View CompTIA IT Fundamentals+ (ITF+) certificate" data-tip="open certificate">
+          <article class="cert" tabindex="0" role="button" data-cert="certs/it-fundamentals.png" data-title="CompTIA IT Fundamentals+ (ITF+)" data-verify="" data-cred-id="" aria-label="View CompTIA IT Fundamentals+ (ITF+) certificate" data-tip="open certificate">
             <div class="cert-logo"><img src="certs/comptia.png" alt="CompTIA"></div>
             <div class="cert-txt"><h3>CompTIA IT Fundamentals+ (ITF+)</h3><div class="by">CompTIA</div></div>
             <div class="cert-foot"><span class="yr">Mar 28, 2025</span><span class="ok">✓ verified</span></div>
@@ -524,7 +533,7 @@
         <p><b>Image goes here.</b><br>Save it in your <code>certs</code> folder as<br><code id="viewer-path"></code></p>
       </div>
     </div>
-    <div class="viewer-foot"><button class="gbtn sm" id="viewer-prev" type="button">◀ Prev</button><span id="viewer-count"></span><button class="gbtn sm" id="viewer-next" type="button">Next ▶</button></div>
+    <div class="viewer-foot"><button class="gbtn sm" id="viewer-prev" type="button">◀ Prev</button><span class="viewer-mid"><span id="viewer-count"></span><a class="gbtn sm go" id="viewer-verify" href="#" target="_blank" rel="noopener" hidden>✓ Verify ↗</a></span><button class="gbtn sm" id="viewer-next" type="button">Next ▶</button></div>
   </div>
 </dialog>
 

@@ -301,6 +301,16 @@ button{font:inherit;color:inherit}
 .cert-foot{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .ok{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;border:1.5px solid var(--ink);background:var(--gloss-go);white-space:nowrap}
 
+/* verify credentials */
+.tp-tip{display:block;padding:6px 10px 9px;background:#d6dff7;color:#3b5aa8;font-size:11.5px;line-height:1.4}
+.tp button,.tp a{display:block;width:100%;text-align:left;padding:3px 10px;border:0;background:#d6dff7;color:#0c3fa8;font:inherit;font-size:12px;text-decoration:none;cursor:pointer}
+.tp button{padding-top:8px}
+.tp a:last-child{padding-bottom:9px}
+.tp button:hover,.tp a:hover,.tp button:focus-visible,.tp a:focus-visible{text-decoration:underline;color:#0a2a8a;background:#c6d4f5}
+a.ok-link{text-decoration:none;color:var(--ink);transition:transform .2s var(--pop),filter .2s}
+a.ok-link:hover,a.ok-link:focus-visible{transform:scale(1.08) rotate(-3deg);filter:brightness(1.06)}
+.viewer-mid{display:flex;align-items:center;gap:12px}
+
 /* ── 06 contact: mail composer ── */
 .contact{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:30px;align-items:start}
 .toolbar{display:flex;flex-wrap:wrap;gap:4px;padding:6px 8px;border-bottom:1px solid #cdd9ef}
@@ -385,6 +395,7 @@ button{font:inherit;color:inherit}
 .viewer-body{display:grid;place-items:center;min-height:260px;max-height:calc(100vh - 190px);overflow:auto;padding:14px;background:#1a2242 !important}
 .viewer-body img{max-width:100%;max-height:calc(100vh - 230px);height:auto;border:2px solid #000;background:#fff}
 .viewer-empty{text-align:center;padding:40px 16px;display:grid;justify-items:center;gap:12px;color:#fff}
+.viewer-empty[hidden],.viewer-body img[hidden],.viewer-cap[hidden],#viewer-verify[hidden]{display:none !important}
 .viewer-empty svg{width:48px;height:48px}
 .viewer-empty p{margin:0;font-size:15px;line-height:1.7}
 .viewer-empty code{font-family:var(--f-vt);font-size:18px;background:#0d1430;border:1px solid #5a6a9a;border-radius:4px;padding:0 6px}
@@ -410,6 +421,8 @@ button{font:inherit;color:inherit}
 .tip.on{opacity:1}
 
 /* ═══════════ BOOT SCREEN ═══════════ */
+html.booting,html.booting body{background:#000}
+html.booting body > *{visibility:hidden}
 .boot{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:#000;color:#fff;cursor:pointer;transition:opacity .45s}
 .boot.out{opacity:0;pointer-events:none}
 .boot-in{display:grid;justify-items:center;gap:6px;text-align:center}

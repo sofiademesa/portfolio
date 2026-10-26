@@ -13,13 +13,14 @@
 
   /* ───── boot screen (once per visit, click to skip) ───── */
   let bootDelay = 0;
-  if (!reduce && !store.get('sofiaos-booted') && !location.hash) {
+  if (root.classList.contains('booting')) {
     bootDelay = 1.5;
     const boot = document.createElement('div');
     boot.className = 'boot';
     boot.setAttribute('aria-hidden', 'true');
     boot.innerHTML = '<div class="boot-in"><svg><use href="#i-spark"/></svg><div class="boot-name">SofiaOS<sup>2026</sup></div><div class="boot-ed">portfolio edition</div><div class="boot-bar"><i><b></b></i></div><div class="boot-skip">click to skip</div></div>';
     document.body.appendChild(boot);
+    root.classList.remove('booting');
     const done = () => { boot.classList.add('out'); setTimeout(() => boot.remove(), 500); };
     boot.addEventListener('click', done);
     setTimeout(done, 1600);
@@ -192,12 +193,14 @@
       img.onerror = () => { img.hidden = true; empty.hidden = !it.isCert; };
       img.classList.remove('swap'); void img.offsetWidth; img.classList.add('swap');
       img.src = it.src;
+      const vv = $('#viewer-verify');
+      if (vv) { vv.hidden = !it.verify; if (it.verify) vv.href = it.verify; }
       const many = items.length > 1;
       $('#viewer-prev').style.visibility = $('#viewer-next').style.visibility = many ? 'visible' : 'hidden';
     };
     const open = (list, i) => { items = list; show(i); hideTip(); if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', ''); };
     const close = () => { dlg.close ? dlg.close() : dlg.removeAttribute('open'); };
-    const certs = $$('[data-cert]').map(c => ({ src: c.dataset.cert, title: c.dataset.title, alt: c.dataset.title + ' certificate', isCert: true }));
+    const certs = $$('[data-cert]').map(c => ({ src: c.dataset.cert, title: c.dataset.title, alt: c.dataset.title + ' certificate', isCert: true, verify: (c.dataset.verify || '').trim() }));
     $$('[data-cert]').forEach((c, i) => {
       c.addEventListener('click', () => open(certs, i));
       c.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(certs, i); } });
@@ -206,6 +209,7 @@
       const list = JSON.parse(b.dataset.shots).map(([src, label]) => ({ src, title: b.dataset.name, caption: label, alt: `${b.dataset.name}: ${label}` }));
       b.addEventListener('click', () => open(list, 0));
     });
+    const of = $('#open-first'); if (of && certs.length) of.addEventListener('click', () => open(certs, 0));
     $('#viewer-x').addEventListener('click', close);
     $('#viewer-prev').addEventListener('click', () => show(cur - 1));
     $('#viewer-next').addEventListener('click', () => show(cur + 1));
@@ -268,6 +272,21 @@
     function hidePeek() { if (!peekOn) return; peekOn = false; clearInterval(peekTimer); peek.classList.remove('on'); }
     addEventListener('scroll', hidePeek, { passive: true });
   })();
+
+
+  /* ───── verify links: paste a URL into data-verify="" on a certificate in index.html
+     and its "✓ verified" badge turns into a "✓ verify ↗" link to the issuer ───── */
+  $$('.cert[data-cert]').forEach(c => {
+    const url = (c.dataset.verify || '').trim(), id = (c.dataset.credId || '').trim();
+    if (!url) return;
+    const ok = $('.ok', c), a = document.createElement('a');
+    a.className = 'ok ok-link'; a.href = url; a.target = '_blank'; a.rel = 'noopener';
+    a.textContent = '✓ verify ↗'; a.dataset.tip = id ? `credential ID: ${id}` : 'check with the issuer';
+    a.setAttribute('aria-label', `Verify ${c.dataset.title} with ${$('.by', c).textContent}`);
+    a.addEventListener('click', e => e.stopPropagation());
+    a.addEventListener('keydown', e => e.stopPropagation());
+    ok.replaceWith(a);
+  });
 
   /* ───── event strips: swipe or step through ───── */
   $$('.strip-win').forEach(win => {
